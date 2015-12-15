@@ -1,0 +1,5 @@
+div.note
+  div(ng-if="visible")
+    ng-transclude
+  div(ng-if="!visible")
+    a(href="",ng-click="toggle()") Zobrazit nápovědu

@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+'use strict';
+
+var gulp = require('gulp');
+require('./../gulpfile');
+
+if (gulp.tasks.build) {
+  gulp.start('build');
+}

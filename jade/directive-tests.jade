@@ -1,0 +1,9 @@
+div.tests(ng-class="{'passed' : isPassed(), 'failed' : !isPassed()}")
+  h4
+    span.icon
+    |  {{results.passed}} / {{results.total}}
+
+  ul
+    li(ng-repeat="test in results.tests", ng-class="test.type|lowercase")
+      span.icon
+      |  {{test.name}}

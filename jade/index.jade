@@ -1,0 +1,53 @@
+html(ng-app='js-todo')
+  head
+    if devel
+      script(src='http://localhost:35730/livereload.js')
+
+    //script(src='/socket.io/socket.io.js')
+    //script.
+    //  var socket = io.connect('http://localhost:8000');
+    //  socket.on('connected', function(data) {
+    //    console.log(data);
+    //  });
+    //  socket.on('testResults', function(data) {
+    //    console.log(data);
+    //  });
+
+    script(src='/node_modules/angular/angular.min.js')
+    script(src='/node_modules/angular-ui-router/release/angular-ui-router.min.js')
+    script(src='/app/app.js')
+
+    link(href="/dist/todo.css", rel="stylesheet")
+
+body#top
+  h1 Školení - Javascript - cvičení (www.angular.cz)
+  if devel
+    .devel-warning Pozor, díváš se na DEVEL verzi - nezapomeň ji promítnout pomocí "npm run build"
+
+  div.row(ui-view="")
+
+  script(type='text/ng-template' id='intro')
+    != render(baseDir + '/intro.jade')
+
+  script(type='text/ng-template' id='todos')
+    include todos
+
+  script(type='text/ng-template' id='todo')
+    include todo
+
+  script(type='text/ng-template' id='directive-pagination')
+    include directive-pagination
+
+  script(type='text/ng-template' id='directive-note')
+    include directive-note
+
+  script(type='text/ng-template' id='directive-solution')
+    include directive-solution
+
+  script(type='text/ng-template' id='directive-tests')
+    include directive-tests
+
+  each todoName in todos
+    script(type='text/ng-template' id='todo-#{todoName}')
+      div
+        != render(baseDir + '/' + todoName + '/complete/todo.jade')
