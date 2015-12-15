@@ -17,6 +17,7 @@ var url = require('url');
 var less = require('gulp-less');
 var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
+var inlineAssets = require('gulp-inline-assets');
 
 
 var baseDir = process.cwd();
@@ -83,17 +84,22 @@ gulp.task('less-todo', function () {
 
 
 gulp.task('less', function () {
-  gulp.src(__dirname + '/less/*.less')
+  return gulp.src(__dirname + '/less/*.less')
     .pipe(plumber())
     .pipe(less())
     .pipe(gulp.dest(__dirname + '/dist'));
 });
 
+gulp.task('css-build', ['less'], function() {
+  return gulp.src(__dirname + '/dist/*.css')
+    .pipe(inlineAssets())
+    .pipe(gulp.dest(__dirname + '/dist'));
+});
 
 // TODO compile javascript
 
 gulp.task('inline', function () {
-  gulp.src(__dirname + '/dist/index.html')
+  return gulp.src(__dirname + '/dist/index.html')
     .pipe(inline({
       base: __dirname,
       //js: uglify,
@@ -105,7 +111,7 @@ gulp.task('inline', function () {
 
 
 gulp.task('jade-build', function () {
-  gulp.src(__dirname + '/jade/index.jade')
+  return gulp.src(__dirname + '/jade/index.jade')
     .pipe(plumber())
     .pipe(jade({
       jade:jadeCompiler,
@@ -156,7 +162,7 @@ gulp.task('devel', function () {
 
 gulp.task('build', function () {
   runSequence(
-    ['jade-build', 'less'],
+    ['jade-build', 'css-build'],
     'inline'
   );
 });

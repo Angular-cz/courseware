@@ -12,6 +12,7 @@
     "gulp": "^3.9.0",
     "gulp-batch": "^1.0.5",
     "gulp-inline": "^0.1.0",
+    "gulp-inline-assets": "^0.1.1",
     "gulp-jade": "^1.1.0",
     "gulp-less": "^3.0.3",
     "gulp-livereload": "^3.8.0",
