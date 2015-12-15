@@ -22,21 +22,14 @@ var inlineAssets = require('gulp-inline-assets');
 
 var baseDir = process.cwd();
 
+// TODO configure todos as objects with names,
+// configure where to take todo - complete/todo.jade
+// generate paths which are sent to path
+// configure socket.io
+
 function loadTodos() {
   return JSON.parse(fs.readFileSync(baseDir + "/todos.json").toString());
 }
-
-// TODO remove unused livereload tasks if not needed
-// build todoapp css files
-
-var config = {
-  httpServer: {
-    host: 'localhost',
-    port: 8283,
-    lrPort: 35730
-  },
-  proxy:'http://angular-cz-js-api.herokuapp.com/'
-};
 
 jadeCompiler.filters.escape = function(block) {
     return block
@@ -53,10 +46,9 @@ jadeCompiler.filters.escape_ng = function(block) {
   var escaped = jadeCompiler.filters.escape(block);
 
   return '<span ng-non-bindable>' + escaped + '</span>';
-}
+};
 
 /*
-
 gulp.task('jade', function () {
   gulp.src('jade/index.jade')
     .pipe(plumber())
@@ -70,18 +62,7 @@ gulp.task('jade', function () {
     }))
     .pipe(gulp.dest('./'))
 });
-
-
-
-gulp.task('less-todo', function () {
-  gulp.src('../css/!*.less')
-    .pipe(plumber())
-    .pipe(less())
-    .pipe(gulp.dest('../css'));
-});
-
 */
-
 
 gulp.task('less', function () {
   return gulp.src(__dirname + '/less/*.less')
@@ -97,7 +78,6 @@ gulp.task('css-build', ['less'], function() {
 });
 
 // TODO compile javascript
-
 gulp.task('inline', function () {
   return gulp.src(__dirname + '/dist/index.html')
     .pipe(inline({
@@ -107,8 +87,6 @@ gulp.task('inline', function () {
     }))
     .pipe(gulp.dest(baseDir));
 });
-
-
 
 gulp.task('jade-build', function () {
   return gulp.src(__dirname + '/jade/index.jade')
@@ -131,10 +109,6 @@ gulp.task('watch', function() {
 
   watch(['less/!*.less'], batch(function (events, done) {
     gulp.start('less', done);
-  }));
-
-  watch(['../css/!*.less'], batch(function (events, done) {
-    gulp.start('less-todo', done);
   }));
 })
 
@@ -167,4 +141,6 @@ gulp.task('build', function () {
   );
 });
 
-gulp.task('default', ['build'])
+// TODO development mode with livereload for todos
+// TODO development mode for this tool
+gulp.task('default', ['build']);
