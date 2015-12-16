@@ -1,5 +1,5 @@
 {
-  "name": "angular-cz-course-ware",
+  "name": "angular-cz-courseware",
   "private": true,
   "version": "0.0.1",
   "author": "angular@angular.cz",
@@ -26,10 +26,6 @@
     "run-sequence": "^1.1.2",
     "serve-static": "^1.10.0",
     "yargs": "^3.18.0"
-  },
-  "scripts": {
-    "start": "gulp devel",
-    "build": "gulp build"
   },
   "bin": {
     "courseware": "bin/courseware"
