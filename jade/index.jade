@@ -1,31 +1,44 @@
-html(ng-app='js-todo')
+html(ng-app='ngCzCourseWare')
   head
     if devel
       script(src='http://localhost:35730/livereload.js')
 
-    //script(src='/socket.io/socket.io.js')
-    //script.
-    //  var socket = io.connect('http://localhost:8000');
-    //  socket.on('connected', function(data) {
-    //    console.log(data);
-    //  });
-    //  socket.on('testResults', function(data) {
-    //    console.log(data);
-    //  });
+    if !devel && config.tests
+      script(src='/socket.io/socket.io.js')
+      script.
+        var socket = io.connect('http://localhost:8000');
+        socket.on('connected', function(data) {
+          console.log(data);
+        });
+        socket.on('testResults', function(data) {
+          console.log(data);
+        });
 
     script(src='/node_modules/angular/angular.min.js')
     script(src='/node_modules/angular-ui-router/release/angular-ui-router.min.js')
+
     script(src='/app/app.js')
+    script(src='/app/todo-directives.js')
+    script(src='/app/todo-loader.js')
+    script(src='/app/todo-results.js')
+    script
+      | angular.module('ngCzCourseWare')
+      | .value('todos', !{JSON.stringify(config.todos).replace(/<\//g, "<\\/")});
 
     link(href="/dist/todo.css", rel="stylesheet")
 
 body#top
-  h1 Školení - Javascript - cvičení (www.angular.cz)
+  h1 !{config.header}
 
   div.row(ui-view="")
 
+  each todoName in config.todos
+    script(type='text/ng-template' id='todo-#{todoName}')
+      div
+        != render(baseDir + '/' + todoName + '/' + config.todoFilePath)
+
   script(type='text/ng-template' id='intro')
-    != render(baseDir + '/intro.jade')
+    != render(config.introFilePath)
 
   script(type='text/ng-template' id='todos')
     include todos
@@ -44,8 +57,3 @@ body#top
 
   script(type='text/ng-template' id='directive-tests')
     include directive-tests
-
-  each todoName in todos
-    script(type='text/ng-template' id='todo-#{todoName}')
-      div
-        != render(baseDir + '/' + todoName + '/complete/todo.jade')

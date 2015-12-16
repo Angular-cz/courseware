@@ -1,5 +1,6 @@
 // TODO remove unused
 
+var path = require('path');
 var jade = require('gulp-jade');
 var jadeCompiler = require('jade');
 var gulp = require('gulp');
@@ -19,17 +20,29 @@ var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
 var inlineAssets = require('gulp-inline-assets');
 
-
 var baseDir = process.cwd();
 
-// TODO configure todos as objects with names,
-// configure where to take todo - complete/todo.jade
-// generate paths which are sent to path
-// configure socket.io
-
-function loadTodos() {
-  return JSON.parse(fs.readFileSync(baseDir + "/todos.json").toString());
+function loadConfig() {
+  return JSON.parse(fs.readFileSync(baseDir + "/courseware.json").toString());
 }
+
+var configFile = loadConfig();
+
+// TODO courseware.json haveto exist
+// TODO todos have to be defined and have proper structure
+// TODO todo could have another names
+// TODO todo file could be in other folder - some kind of template.
+// TODO default config valuesx
+
+var config = {
+  header: configFile.header,
+  todos: configFile.todos,
+  baseDir : baseDir,
+  introFilePath: path.join(baseDir, configFile.introFile),
+  todoFilePath : path.join(configFile.todoFilePath, configFile.todoFile)
+};
+
+console.log(config);
 
 jadeCompiler.filters.escape = function(block) {
     return block
@@ -94,7 +107,7 @@ gulp.task('jade-build', function () {
     .pipe(jade({
       jade:jadeCompiler,
       locals: {
-        todos: loadTodos(),
+        config: config,
         baseDir: baseDir,
         render: jadeCompiler.renderFile
       }

@@ -32,6 +32,6 @@
     "build": "gulp build"
   },
   "bin": {
-    "course-ware": "bin/course-ware"
+    "courseware": "bin/courseware"
   }
 }
