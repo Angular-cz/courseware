@@ -8,7 +8,7 @@ Každopádně použít jej bez našeho svolení zatím nesmíte.
 
 ## Technologie ##
 
-Jade, Angualar, Gulp, Npm
+Jade, Angualar, Bootstrap, Gulp, Npm
 
 ## Použití ##
 
@@ -20,10 +20,20 @@ npm install angular-cz-courseware --save-dev
 v package.json nápovědu zbuildovat pomocí
 
 ```
-courseware
+courseware build
 ```
 
 Zbuilduje todo do /index.html se všemi inline závislostmi.
+
+## Ladění nápovědy ##
+
+Můžete spustit vývojový server pomocí
+
+```
+courseware build
+```
+
+Vývojový server se spustí na http://localhost:8080 a sleduje změny všech todo.jade a také courseware-intro.jade
 
 ## Konfigurace ##
 
@@ -56,7 +66,18 @@ Ukázka:
     "99-angular-extra"
   ]
 }
+
+### Založení konfigurace ###
+
+Projekt můžete initcializovat pomocí
+
 ```
+courseware init
+```
+
+Vytvoří se courseware.json a courseware-intor.jade
+
+### Další informace, které ještě poupravíme ###
 
 ### Struktura ###
 Generátor bere seznam souborů ze seznamu todos, ve stejném pořadí zobrazí menu a hledá šablony v jednotlivých cvičeních podle zadaného nastavení složky.

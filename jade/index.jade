@@ -1,7 +1,7 @@
 html(ng-app='ngCzCourseWare')
   head
     if devel
-      script(src='http://localhost:35730/livereload.js')
+      script(src='http://localhost:' + config.lifeReloadPort + '/livereload.js')
 
     if !devel && config.tests
       script(src='/socket.io/socket.io.js')
@@ -26,6 +26,8 @@ html(ng-app='ngCzCourseWare')
       | .value('todos', !{JSON.stringify(config.todos).replace(/<\//g, "<\\/")});
 
     link(href="/dist/todo.css", rel="stylesheet")
+
+    title !{config.header}
 
 body#top
   h1 !{config.header}

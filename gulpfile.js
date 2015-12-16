@@ -33,27 +33,27 @@ var configFile = loadConfig();
 // TODO todo could have another names
 // TODO todo file could be in other folder - some kind of template.
 // TODO default config valuesx
+// TODO configure port of development server
 
 var config = {
   header: configFile.header,
   todos: configFile.todos,
-  baseDir : baseDir,
+  baseDir: baseDir,
   introFilePath: path.join(baseDir, configFile.introFile),
-  todoFilePath : path.join(configFile.todoFilePath, configFile.todoFile)
+  todoFilePath: path.join(configFile.todoFilePath, configFile.todoFile),
+  lifeReloadPort: 35730,
+  develServerPort: 8080
 };
-
-console.log(config);
 
 jadeCompiler.filters.escape = function(block) {
-    return block
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/#/g, '&#35;')
-      .replace(/\\/g, '\\\\');
+  return block
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/#/g, '&#35;')
+    .replace(/\\/g, '\\\\');
 };
-
 
 jadeCompiler.filters.escape_ng = function(block) {
   var escaped = jadeCompiler.filters.escape(block);
@@ -61,23 +61,7 @@ jadeCompiler.filters.escape_ng = function(block) {
   return '<span ng-non-bindable>' + escaped + '</span>';
 };
 
-/*
-gulp.task('jade', function () {
-  gulp.src('jade/index.jade')
-    .pipe(plumber())
-    .pipe(jade({
-      jade:jadeCompiler,
-      locals: {
-        devel: true,
-        todos: loadTodos(),
-        render: jadeCompiler.renderFile
-      }
-    }))
-    .pipe(gulp.dest('./'))
-});
-*/
-
-gulp.task('less', function () {
+gulp.task('less', function() {
   return gulp.src(__dirname + '/less/*.less')
     .pipe(plumber())
     .pipe(less())
@@ -90,8 +74,10 @@ gulp.task('css-build', ['less'], function() {
     .pipe(gulp.dest(__dirname + '/dist'));
 });
 
-// TODO compile javascript
-gulp.task('inline', function () {
+// TODO compile also javascript
+gulp.task('inline', function() {
+  console.log('Inlining assets');
+
   return gulp.src(__dirname + '/dist/index.html')
     .pipe(inline({
       base: __dirname,
@@ -101,11 +87,11 @@ gulp.task('inline', function () {
     .pipe(gulp.dest(baseDir));
 });
 
-gulp.task('jade-build', function () {
+gulp.task('jade-build', function() {
   return gulp.src(__dirname + '/jade/index.jade')
     .pipe(plumber())
     .pipe(jade({
-      jade:jadeCompiler,
+      jade: jadeCompiler,
       locals: {
         config: config,
         baseDir: baseDir,
@@ -114,46 +100,72 @@ gulp.task('jade-build', function () {
     }))
     .pipe(gulp.dest(__dirname + '/dist/'));
 });
-/*
-gulp.task('watch', function() {
-  watch(['jade/!*.jade', '../!*!/complete/todo.jade'], batch(function (events, done) {
-    gulp.start('jade', done);
-  }));
 
-  watch(['less/!*.less'], batch(function (events, done) {
-    gulp.start('less', done);
-  }));
-})
-
-gulp.task('connect', function () {
-
-  livereload.listen(config.httpServer.lrPort);
-
-  var app = connect();
-  app.use(serveStatic('../'));
-  app.listen(config.httpServer.port);
-
-  gulp.watch(['index.html','app/!*.js', 'css/!*.css']).on('change', function (filepath) {
-    livereload.changed(filepath, config.httpServer.lrPort);
-  });
-
-  app.use('/api', proxy(url.parse(config.proxy)));
+gulp.task('jade-devel', function() {
+  console.log('Building courseware');
+  return gulp.src(__dirname + '/jade/index.jade')
+    .pipe(plumber())
+    .pipe(jade({
+      jade: jadeCompiler,
+      locals: {
+        devel: true,
+        config: config,
+        baseDir: baseDir,
+        render: jadeCompiler.renderFile
+      }
+    }))
+    .pipe(gulp.dest(__dirname + '/dist/'));
 });
 
-gulp.task('devel', function () {
+// TODO should be able to rebuild also when courseware.json changed
+gulp.task('watch', function() {
+  var paths = [
+    baseDir + '/**/' + config.todoFilePath,
+    config.introFilePath];
+
+  console.log(paths);
+
+
+  watch(paths, batch(function(events, done) {
+    gulp.start('jade-devel', done);
+  }));
+
+  watch([__dirname + '/dist/index.html'], batch(function(events, done) {
+    gulp.start('inline', done);
+  }));
+});
+
+gulp.task('connect', function() {
+  console.log('Running development server : http://localhost:' + config.develServerPort);
+  console.log('Livereload is listening on : http://localhost:' + config.lifeReloadPort);
+  livereload.listen(config.lifeReloadPort);
+
+  var app = connect();
+  app.use(serveStatic(baseDir));
+  app.listen(config.develServerPort);
+
+  gulp.watch([config.baseDir + '/index.html']).on('change', function(filepath) {
+
+    console.log('Reload courseware');
+    livereload.changed(filepath, config.lifeReloadPort);
+  });
+});
+
+// TODO spead up livereload, inlining looks to be slow
+gulp.task('devel', function() {
   runSequence(
-    ['jade', 'connect', 'less'],
+    ['jade-devel', 'css-build', 'connect'],
+    'inline',
     'watch'
   );
-});*/
+});
 
-gulp.task('build', function () {
+gulp.task('build', function() {
   runSequence(
     ['jade-build', 'css-build'],
     'inline'
   );
 });
 
-// TODO development mode with livereload for todos
 // TODO development mode for this tool
 gulp.task('default', ['build']);

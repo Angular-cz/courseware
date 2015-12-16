@@ -9,6 +9,7 @@
     "bootstrap": "^3.3.6",
     "bower": "^1.4.1",
     "connect": "^3.4.0",
+    "format-json": "^1.0.3",
     "gulp": "^3.9.0",
     "gulp-batch": "^1.0.5",
     "gulp-inline": "^0.1.0",
@@ -25,7 +26,7 @@
     "proxy-middleware": "^0.13.1",
     "run-sequence": "^1.1.2",
     "serve-static": "^1.10.0",
-    "yargs": "^3.18.0"
+    "yargs": "^3.31.0"
   },
   "bin": {
     "courseware": "bin/courseware"

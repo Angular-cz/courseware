@@ -1,9 +1,62 @@
 #!/usr/bin/env node
 'use strict';
 
-var gulp = require('gulp');
-require('./../gulpfile');
+var baseDir = process.cwd();
 
-if (gulp.tasks.build) {
-  gulp.start('build');
+var argv = require('yargs').usage('courseware <command>')
+  .command('init', 'create initial congiguration')
+  .command('build', 'build index.html courseware')
+  .command('devel', 'run development server with livereload')
+  .help('help')
+  .epilog('copyright 2015')
+  .argv;
+
+switch (argv._[0]) {
+  case "init":
+    init();
+    break;
+
+  case "build":
+    console.log('Building courseware into index.html');
+    runGulpTask('build');
+    break;
+
+  case "devel":
+    runGulpTask('devel');
+    break;
+
+  default:
+    argv.showHelp(log);
+}
+
+function init() {
+
+  var defaultConfig = {
+    "introFile": "courseware-intro.jade",
+    "header": "CourseWare title",
+    "todoFile": "todo.jade",
+    "todoFilePath": "complete",
+    "todos": []
+  };
+
+  var json = require('format-json');
+  var fs = require('fs');
+  fs.writeFile(baseDir + '/courseware.json', json.plain(defaultConfig));
+  fs.writeFile(baseDir + '/courseware-intro.jade', 'h2 Welcome to our course');
+
+  console.log('Courseware initialization - courseware.json');
+  console.log(' - Configuration file has been created - courseware.json');
+  console.log(' - template been created - courseware.json');
+}
+
+function runGulpTask(task) {
+  var gulp = require('gulp');
+  require('./../gulpfile');
+
+  if (!gulp.tasks[task]) {
+    console.error('There was error when loading gulpfile');
+    process.exit();
+  }
+
+  gulp.start(task);
 }
