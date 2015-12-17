@@ -3,14 +3,14 @@
 
 var baseDir = process.cwd();
 
-var argv = require('yargs').usage('courseware <command>')
+var yargs = require('yargs').usage('courseware <command>')
   .command('init', 'create initial congiguration')
   .command('build', 'build index.html courseware')
   .command('devel', 'run development server with livereload')
   .help('help')
-  .epilog('copyright 2015')
-  .argv;
+  .epilog('copyright 2015');
 
+var argv = yargs.argv;
 switch (argv._[0]) {
   case "init":
     init();
@@ -26,7 +26,7 @@ switch (argv._[0]) {
     break;
 
   default:
-    argv.showHelp(log);
+    yargs.showHelp('log');
 }
 
 function init() {
