@@ -82,6 +82,9 @@ Vytvoří se courseware.json a courseware-intor.jade
 ### Struktura ###
 Generátor bere seznam souborů ze seznamu todos, ve stejném pořadí zobrazí menu a hledá šablony v jednotlivých cvičeních podle zadaného nastavení složky.
 
+### Jade ###
+
+Pro escapování html se používá **:ecape** a pro escapování expression, které by neměl zpracovat angular **:escape-ng**
 ### Direktivy ###
 
 #### solution ####
@@ -93,6 +96,15 @@ Zobrazí skrývatelný box s řešením kódu, standardně je brán jako javascr
 solution.
 solution(visible, html).
 ```
+
+zdrojový kód je také možné zapsat pomocí
+
+```
+pre
+  code.
+    your code... {}
+```
+
 
 #### note ####
 Zobrazí skrývatelný box s nápovědou, standardně je skrytý. 

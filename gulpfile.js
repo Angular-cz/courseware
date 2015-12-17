@@ -55,6 +55,7 @@ jadeCompiler.filters.escape = function(block) {
     .replace(/\\/g, '\\\\');
 };
 
+// TODO built into directive itself into template function
 jadeCompiler.filters.escape_ng = function(block) {
   var escaped = jadeCompiler.filters.escape(block);
 
@@ -122,9 +123,6 @@ gulp.task('watch', function() {
   var paths = [
     baseDir + '/**/' + config.todoFilePath,
     config.introFilePath];
-
-  console.log(paths);
-
 
   watch(paths, batch(function(events, done) {
     gulp.start('jade-devel', done);
