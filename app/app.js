@@ -1,6 +1,9 @@
 (function() {
 
-  angular.module('ngCzCourseWare', ['ui.router'])
+  angular.module('ngCzCourseWare', [
+      'ui.router',
+      'btford.socket-io'
+    ])
     .config(function($stateProvider, $urlRouterProvider) {
 
       $urlRouterProvider.otherwise("/");

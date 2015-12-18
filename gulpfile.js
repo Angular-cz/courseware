@@ -42,7 +42,8 @@ var config = {
   introFilePath: path.join(baseDir, configFile.introFile),
   todoFilePath: path.join(configFile.todoFilePath, configFile.todoFile),
   lifeReloadPort: 35730,
-  develServerPort: 8080
+  develServerPort: 8080,
+  testsSocketUrl: configFile.testsSocketUrl
 };
 
 jadeCompiler.filters.escape = function(block) {

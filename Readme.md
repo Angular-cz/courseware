@@ -64,7 +64,9 @@ Ukázka:
     "99-backbone-extra",
     "99-ember-extra",
     "99-angular-extra"
-  ]
+  ],
+  "testsSocketUrl" : "http://localhost:8000"
+
 }
 
 ### Založení konfigurace ###
@@ -77,7 +79,67 @@ courseware init
 
 Vytvoří se courseware.json a courseware-intor.jade
 
-### Další informace, které ještě poupravíme ###
+### Spouštění testů ###
+Courseware má podporu spouštění testů a aktualizace gui přes sockety.
+
+Aby toto fungovalo, je třeba udělat několik kroků
+
+#### Test runner
+
+Přidat do test runneru spec-json-reporter a výstupy nasměrovat do složky
+
+Příklad pro karma.
+
+```
+  config.plugins.push('karma-spec-json-reporter');
+
+  config.reporters.push('specjson');
+
+  var outPath = path.join(processDir, "test-results/", exerciseDir + '.json');
+
+  config.specjsonReporter = {
+    outputFile: outPath
+  };
+```
+
+#### Socket server ####
+Aktivovat socket server, připojením na existující server a specifikovat složku s výsledky souborů
+
+Ukázka z gulpfile
+```
+  var app = connect();
+  app.use(serveStatic('./'));
+  var server = app.listen(config.httpServer.port);
+
+  ...
+
+  var courseware = require('angular-cz-courseware');
+  courseware.socketServer(server, 'test-results');
+});
+```
+
+#### Konfigurace
+V courseware.json přidat informaci, kde běží server.
+
+```
+  "testsSocketUrl" : "http://localhost:8000"
+```
+
+#### V todo popisech
+
+Použít v todo popisech direktivu pro zobrazení testů
+
+```
+tests(todo="3.3")
+```
+
+V popisu testů v it / describe se pak musí objevit výraz (TODO 3.3)
+
+#### Použití
+
+Po startu http-serveru bude aplikace komunikovat se socket serverem a reagovat na změny, poté pusťte karma-runner pro příslušný příklad.
+
+Před startem je ještě nutno mít vytvořeny soubory s výsledky aby fungoval dobře watch. 
 
 ### Struktura ###
 Generátor bere seznam souborů ze seznamu todos, ve stejném pořadí zobrazí menu a hledá šablony v jednotlivých cvičeních podle zadaného nastavení složky.

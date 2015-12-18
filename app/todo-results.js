@@ -1,37 +1,49 @@
 (function() {
   angular.module('ngCzCourseWare')
     .service('testResults', TestsResults)
+    .service('testResultsParser', TestResultsParser)
+    .provider('socketConnector', SocketConnector)
     .directive('tests', testsDirective);
 
-  function TestsResults($stateParams) {
-    var TMP = {
-      "TimeoutPromise je definována jako funkce (TODO 1.1)": {
-        "se dvěma parametry": "PASSED",
-        "která vrací promise": "FAILED"
-      },
-      "TimeoutPromise": {
-        "hodnota je stejná jako návratová hodnota conditionFunction (TODO 1.2)": "FAILED",
-        "pokud funkce vrátí null je promise rejected (TODO 1.3)": "FAILED"
-      },
-      "TimeoutPromise conditionFunction": {
-        "je volána s definovaným zpožděním (TODO 1.4)": "FAILED"
-      }
+  function SocketConnector() {
+
+    var url;
+    this.setUrl = function(newUrl) {
+      url = newUrl;
     };
 
-    // todo reaction to socket - fills data
-    // todo possibility to get service for routename
+    this.$get = function(socketFactory) {
+      if (typeof io !== 'undefined' && url) {
+        var myIoSocket = io.connect(url);
 
-    // todo initial load return promise and fill object
-    this.loadInitialData = function() {
-      this.lastResults = this.getFlattened(TMP);
-    }
-
-    this.getResultsFor = function(todo) {
-      if (!this.lastResults) {
-        this.loadInitialData();
+        var socket = socketFactory({
+          ioSocket: myIoSocket
+        });
       }
 
-      var tests = this.getLinesFor(todo);
+      if (!socket) {
+        return {
+          requestTestResults : function() {},
+          onActualization : function() {}
+        };
+      }
+
+
+      return {
+        requestTestResults: function(todoName) {
+          socket.emit('resultRequest', todoName)
+        },
+        onActualization: function(callback) {
+          socket.on('testResults', callback);
+        }
+      }
+    }
+  }
+
+  function TestResultsParser() {
+
+    this.getResultsFor = function(todo, testResults) {
+      var tests = this.getLinesFor(todo, testResults);
 
       var result = {};
       result.total = tests.length;
@@ -42,16 +54,14 @@
       result.tests = tests;
 
       return result;
-    }
+    };
 
-    this.getLinesFor = function(todo) {
-
-      // todo return promise
-      return this.lastResults.filter(function(item) {
+    this.getLinesFor = function(todo, testResults) {
+      return testResults.filter(function(item) {
         var todoName = '(TODO ' + todo + ')';
         return item.name.indexOf(todoName) > -1
       });
-    }
+    };
 
     this.getFlattened = function(data) {
 
@@ -73,7 +83,6 @@
           } else {
             result.push(new Item(name, data[key]));
           }
-
         }
       }
 
@@ -85,6 +94,49 @@
     }
   }
 
+  function TestResultsLoader(testResultsParser) {
+    this.setResults = function(data) {
+      this.lastResults = testResultsParser.getFlattened(data);
+    };
+
+    this.getResultsFor = function(todo) {
+      if (!this.lastResults) {
+        return;
+      }
+
+      return testResultsParser.getResultsFor(todo, this.lastResults);
+    }
+  }
+
+  function TestsResults($stateParams, $rootScope, socketConnector, $injector) {
+
+    this.resultLoaders = {};
+
+    this.getResultsLoader = function(todoName) {
+      if (!this.resultLoaders[todoName]) {
+        socketConnector.requestTestResults(todoName);
+        this.resultLoaders[todoName] = $injector.instantiate(TestResultsLoader);
+      }
+
+      return this.resultLoaders[todoName];
+    };
+
+    this.getResultsLoaderByRoute = function() {
+      return this.getResultsLoader($stateParams.name);
+    };
+
+    this.actualizeData_ = function(message) {
+      var loader = this.getResultsLoader(message.exercise);
+      console.log('Actualization of todo:' + message.exercise);
+      loader.setResults(message);
+
+
+      $rootScope.$broadcast('todo:actualized');
+    };
+
+    socketConnector.onActualization(this.actualizeData_.bind(this));
+  }
+
   function testsDirective(testResults) {
     return {
       restrict: 'E',
@@ -93,13 +145,17 @@
       },
       templateUrl: "directive-tests",
       link: function(scope) {
-        scope.results = testResults.getResultsFor(scope.todo);
+        var loader = testResults.getResultsLoaderByRoute();
+        scope.results = loader.getResultsFor(scope.todo);
+
+        scope.$on('todo:actualized', function() {
+          scope.results = loader.getResultsFor(scope.todo);
+        });
 
         scope.isPassed = function() {
-          return scope.results.passed === scope.results.total;
+          return scope.results && scope.results.passed === scope.results.total;
         }
       }
-
     }
   }
 })();

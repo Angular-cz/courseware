@@ -1,4 +1,4 @@
-div.tests(ng-class="{'passed' : isPassed(), 'failed' : !isPassed()}")
+div.tests(ng-if="results", ng-class="{'passed' : isPassed(), 'failed' : !isPassed()}")
   h4
     span.icon
     |  {{results.passed}} / {{results.total}}
