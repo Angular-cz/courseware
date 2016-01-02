@@ -25,6 +25,8 @@ courseware build
 
 Zbuilduje todo do /index.html se všemi inline závislostmi.
 
+Pokud nechcete buildovat nápovědu spolus Vašim projektem, můžete využít rovnou zbuildovaný index.html, který obsahuje vše potřebné.
+
 ## Ladění nápovědy ##
 
 Můžete spustit vývojový server pomocí
