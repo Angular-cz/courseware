@@ -30,7 +30,7 @@ Zbuilduje todo do /index.html se všemi inline závislostmi.
 Můžete spustit vývojový server pomocí
 
 ```
-courseware build
+courseware devel
 ```
 
 Vývojový server se spustí na http://localhost:8080 a sleduje změny všech todo.jade a také courseware-intro.jade
