@@ -7,8 +7,7 @@ var yargs = require('yargs').usage('courseware <command>')
   .command('init', 'create initial congiguration')
   .command('build', 'build index.html courseware')
   .command('devel', 'run development server with livereload')
-  .help('help')
-  .epilog('copyright 2015');
+  .help('help');
 
 var argv = yargs.argv;
 switch (argv._[0]) {
@@ -23,6 +22,10 @@ switch (argv._[0]) {
 
   case "devel":
     runGulpTask('devel');
+    break;
+
+  case "devel-devel":
+    runGulpTask('devel-devel');
     break;
 
   default:

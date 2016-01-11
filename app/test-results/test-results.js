@@ -1,9 +1,7 @@
 (function() {
   angular.module('ngCzCourseWare')
     .service('testResults', TestsResults)
-    .service('testResultsParser', TestResultsParser)
     .provider('socketConnector', SocketConnector)
-    .directive('tests', testsDirective);
 
   function SocketConnector() {
 
@@ -28,7 +26,6 @@
         };
       }
 
-
       return {
         requestTestResults: function(todoName) {
           socket.emit('resultRequest', todoName)
@@ -37,60 +34,6 @@
           socket.on('testResults', callback);
         }
       }
-    }
-  }
-
-  function TestResultsParser() {
-
-    this.getResultsFor = function(todo, testResults) {
-      var tests = this.getLinesFor(todo, testResults);
-
-      var result = {};
-      result.total = tests.length;
-      result.passed = tests.filter(function(item) {
-        return item.type === "PASSED";
-      }).length;
-
-      result.tests = tests;
-
-      return result;
-    };
-
-    this.getLinesFor = function(todo, testResults) {
-      return testResults.filter(function(item) {
-        var todoName = '(TODO ' + todo + ')';
-        return item.name.indexOf(todoName) > -1
-      });
-    };
-
-    this.getFlattened = function(data) {
-
-      function Item(name, type) {
-        this.name = name;
-        this.type = type;
-      }
-
-      // TODO - refactor, it is midnight coding - functional - but uggly (but you have tests)
-      function parseData(data, prefix) {
-        prefix = (prefix) ? prefix + ' ' : '';
-
-        for (var key in data) {
-          var value = data[key];
-          var name = prefix + key;
-
-          if (typeof value === "object") {
-            parseData(value, name)
-          } else {
-            result.push(new Item(name, data[key]));
-          }
-        }
-      }
-
-      var result = [];
-
-      parseData(data, '');
-
-      return result;
     }
   }
 
@@ -135,27 +78,5 @@
     };
 
     socketConnector.onActualization(this.actualizeData_.bind(this));
-  }
-
-  function testsDirective(testResults) {
-    return {
-      restrict: 'E',
-      scope: {
-        todo: '@'
-      },
-      templateUrl: "directive-tests",
-      link: function(scope) {
-        var loader = testResults.getResultsLoaderByRoute();
-        scope.results = loader.getResultsFor(scope.todo);
-
-        scope.$on('todo:actualized', function() {
-          scope.results = loader.getResultsFor(scope.todo);
-        });
-
-        scope.isPassed = function() {
-          return scope.results && scope.results.passed === scope.results.total;
-        }
-      }
-    }
   }
 })();

@@ -8,9 +8,13 @@ html(ng-app='ngCzCourseWare')
     script(src='/node_modules/angular-ui-router/release/angular-ui-router.min.js')
 
     script(src='/app/app.js')
-    script(src='/app/todo-directives.js')
+    script(src='/app/controllers.js')
+    script(src='/app/directives.js')
     script(src='/app/todo-loader.js')
-    script(src='/app/todo-results.js')
+    script(src='/app/test-results/test-results.js')
+    script(src='/app/test-results/test-results-parser.js')
+    script(src='/app/test-results/test-results-directive.js')
+
     script
       | angular.module('ngCzCourseWare')
       | .value('todos', !{JSON.stringify(config.todos).replace(/<\//g, "<\\/")});
@@ -52,13 +56,16 @@ body#top
     include todo
 
   script(type='text/ng-template' id='directive-pagination')
-    include directive-pagination
+    include directives/pagination
 
   script(type='text/ng-template' id='directive-note')
-    include directive-note
+    include directives/note
 
   script(type='text/ng-template' id='directive-solution')
-    include directive-solution
+    include directives/solution
 
   script(type='text/ng-template' id='directive-tests')
-    include directive-tests
+    include directives/tests
+
+  script(type='text/ng-template' id='directive-snippet')
+    include directives/snippet

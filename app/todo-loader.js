@@ -2,27 +2,16 @@
   angular.module('ngCzCourseWare')
     .service('todoLoader', TodoLoader);
 
-  function TodoLoader($http, todos) {
+  function TodoLoader(todos) {
 
     this.todos = todos;
 
-    this.loadTodos = function() {
-      return $http.get('todos.json')
-        .then(function(response) {
-          return response.data;
-        })
-    };
-
-    this.contains = function(todo) {
+    this.isValid = function(todo) {
       return this.todos.indexOf(todo) > -1;
     };
 
-    this.getTodos = function() {
-      return this.todos;
-    };
-
     this.getNext = function(todo) {
-      if (!this.contains(todo)) {
+      if (!this.isValid(todo)) {
         return;
       }
       var index = this.todos.indexOf(todo);
@@ -30,12 +19,11 @@
     };
 
     this.getPrev = function(todo) {
-      if (!this.contains(todo)) {
+      if (!this.isValid(todo)) {
         return;
       }
       var index = this.todos.indexOf(todo);
       return this.todos[index - 1];
     }
   }
-
 })();

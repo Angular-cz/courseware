@@ -1,0 +1,8 @@
+div
+  div(ng-if="visible")
+    snippet(type="{{highlight}}")
+      ng-transclude
+
+  div(ng-if="!visible")
+    .text-right
+      a(href="",ng-click="toggle()") Show solution

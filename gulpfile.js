@@ -41,7 +41,7 @@ var config = {
   baseDir: baseDir,
   introFilePath: path.join(baseDir, configFile.introFile),
   todoFilePath: path.join(configFile.todoFilePath, configFile.todoFile),
-  lifeReloadPort: 35730,
+lifeReloadPort: 35730,
   develServerPort: 8080,
   testsSocketUrl: configFile.testsSocketUrl
 };
@@ -119,7 +119,18 @@ gulp.task('jade-devel', function() {
     .pipe(gulp.dest(__dirname + '/dist/'));
 });
 
-// TODO should be able to rebuild also when courseware.json changed
+gulp.task('watch-courseware', function() {
+  // TODO watch less
+  var paths = [
+    __dirname + '/app/**/*.js',
+    __dirname + '/jade/**/*.jade'];
+
+  watch(paths, batch(function(events, done) {
+    gulp.start('jade-devel', done);
+  }));
+});
+
+// TODO should be able to rebuild also when courseware.json changed - it needs to reload config
 gulp.task('watch', function() {
   var paths = [
     baseDir + '/**/' + config.todoFilePath,
@@ -133,6 +144,7 @@ gulp.task('watch', function() {
     gulp.start('inline', done);
   }));
 });
+
 
 gulp.task('connect', function() {
   console.log('Running development server : http://localhost:' + config.develServerPort);
@@ -148,6 +160,13 @@ gulp.task('connect', function() {
     console.log('Reload courseware');
     livereload.changed(filepath, config.lifeReloadPort);
   });
+});
+
+gulp.task('devel-devel', function() {
+  runSequence(
+    'devel',
+    'watch-courseware'
+  );
 });
 
 // TODO spead up livereload, inlining looks to be slow
@@ -166,5 +185,4 @@ gulp.task('build', function() {
   );
 });
 
-// TODO development mode for this tool
 gulp.task('default', ['build']);
