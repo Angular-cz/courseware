@@ -120,12 +120,20 @@ gulp.task('jade-devel', function() {
 });
 
 gulp.task('watch-courseware', function() {
-  // TODO watch less
-  var paths = [
-    __dirname + '/app/**/*.js',
-    __dirname + '/jade/**/*.jade'];
 
-  watch(paths, batch(function(events, done) {
+  watch([__dirname + '/less/**/*.less'], batch(function(events, done) {
+    gulp.start('css-build', done);
+  }));
+
+  var inlinePaths = [
+    __dirname + '/app/**/*.js',
+    __dirname + '/dist/*.css'];
+
+  watch(inlinePaths, batch(function(events, done) {
+    gulp.start('inline', done);
+  }));
+
+  watch([__dirname + '/jade/**/*.jade'], batch(function(events, done) {
     gulp.start('jade-devel', done);
   }));
 });
@@ -145,7 +153,6 @@ gulp.task('watch', function() {
   }));
 });
 
-
 gulp.task('connect', function() {
   console.log('Running development server : http://localhost:' + config.develServerPort);
   console.log('Livereload is listening on : http://localhost:' + config.lifeReloadPort);
@@ -162,7 +169,7 @@ gulp.task('connect', function() {
   });
 });
 
-gulp.task('devel-devel', function() {
+gulp.task('courseware-devel', function() {
   runSequence(
     'devel',
     'watch-courseware'

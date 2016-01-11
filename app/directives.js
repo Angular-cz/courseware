@@ -1,7 +1,7 @@
 (function() {
   angular.module('ngCzCourseWare')
     .directive('pagination', paginationDirective)
-    .directive('note', noteDirective)
+    .directive('hint', hintDirective)
     .directive('snippet', snippetDirective)
     .directive('solution', solutionDirective);
 
@@ -59,10 +59,10 @@
     }
   }
 
-  function noteDirective() {
+  function hintDirective() {
     return {
       restrict: "E",
-      templateUrl: "directive-note",
+      templateUrl: "directive-hint",
       transclude: true,
       scope: true,
       link: function(scope, elem, attrs) {

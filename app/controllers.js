@@ -4,15 +4,15 @@
     .controller('IndexCtrl', IndexCtrl);
 
   function TodoCtrl($stateParams, todoLoader, $location, $anchorScroll) {
-    var current = $stateParams.name;
+    this.current = $stateParams.name;
 
     $anchorScroll("top");
 
-    if (!todoLoader.isValid(current)) {
+    if (!todoLoader.isValid(this.current)) {
       $location.path('/');
     }
 
-    this.template = 'todo-' + current;
+    this.template = 'todo-' + this.current;
   }
 
   function IndexCtrl(todos) {

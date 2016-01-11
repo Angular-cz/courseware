@@ -148,7 +148,7 @@ Generátor bere seznam souborů ze seznamu todos, ve stejném pořadí zobrazí 
 
 ### Jade ###
 
-Pro escapování html se používá **:ecape** a pro escapování expression, které by neměl zpracovat angular **:escape-ng**
+Pro escapování html se používá **:ecape** a pro escapování expression, které by neměl zpracovat angular **:escape_ng**
 ### Direktivy ###
 
 #### solution ####
@@ -170,14 +170,14 @@ pre
 ```
 
 
-#### note ####
+#### hint ####
 Zobrazí skrývatelný box s nápovědou, standardně je skrytý. 
  - Pomocí "visible" je možné jej zobrazit. 
 
 
 ```
-note
-note(visible)
+hint
+hint(visible)
 ```
 
 

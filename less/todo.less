@@ -15,7 +15,13 @@ body {
   .make-sm-column(9);
 }
 
-note {
+.footer {
+  text-align: right;
+  font-size: 9pt;
+  font-style: italic;
+}
+
+hint {
   div {
     div {
       .alert;
@@ -41,11 +47,6 @@ pagination {
   }
 }
 
-.devel-warning {
-  .alert;
-  .alert-danger;
-}
-
 .open-exercise {
   .btn;
   .btn-success;
@@ -61,6 +62,35 @@ h4 {
     padding-left: 5px;
     font-size: 80%;
   }
+}
+
+.info {
+  .alert;
+  .alert-info;
+  padding: 10px;
+}
+
+.warning {
+  .alert;
+  .alert-warning;
+  padding: 10px;
+}
+
+.danger {
+  .alert;
+  .alert-danger;
+  padding: 10px;
+}
+
+.success {
+  .alert;
+  .alert-success;
+  padding: 10px;
+}
+
+.well {
+  .well;
+  padding: 10px;
 }
 
 .bs-callout(@color) {
