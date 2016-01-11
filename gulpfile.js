@@ -19,20 +19,16 @@ var less = require('gulp-less');
 var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
 var inlineAssets = require('gulp-inline-assets');
-
+var courseware = require("./main.js");
 var baseDir = process.cwd();
 
-function loadConfig() {
-  return JSON.parse(fs.readFileSync(baseDir + "/courseware.json").toString());
-}
-
-var configFile = loadConfig();
+var configFile = courseware.loadConfig();
 
 // TODO courseware.json haveto exist
 // TODO todos have to be defined and have proper structure
 // TODO todo could have another names
 // TODO todo file could be in other folder - some kind of template.
-// TODO default config valuesx
+// TODO default config values
 // TODO configure port of development server
 
 var config = {
@@ -41,11 +37,12 @@ var config = {
   baseDir: baseDir,
   introFilePath: path.join(baseDir, configFile.introFile),
   todoFilePath: path.join(configFile.todoFilePath, configFile.todoFile),
-lifeReloadPort: 35730,
+  lifeReloadPort: 35730,
   develServerPort: 8080,
   testsSocketUrl: configFile.testsSocketUrl
 };
 
+// escaping of html entities
 jadeCompiler.filters.escape = function(block) {
   return block
     .replace(/&/g, '&amp;')
@@ -56,13 +53,14 @@ jadeCompiler.filters.escape = function(block) {
     .replace(/\\/g, '\\\\');
 };
 
-// TODO built into directive itself into template function
+// TODO try to built into directives itself into template function
+// escape {{}} by encapsulation into span with ng-non-bindable
 jadeCompiler.filters.escape_ng = function(block) {
   var escaped = jadeCompiler.filters.escape(block);
-
   return '<span ng-non-bindable>' + escaped + '</span>';
 };
 
+// compile courseware less into css
 gulp.task('less', function() {
   return gulp.src(__dirname + '/less/*.less')
     .pipe(plumber())
@@ -70,14 +68,17 @@ gulp.task('less', function() {
     .pipe(gulp.dest(__dirname + '/dist'));
 });
 
+// inline linked assets into css, fonts, images ...
 gulp.task('css-build', ['less'], function() {
   return gulp.src(__dirname + '/dist/*.css')
     .pipe(inlineAssets())
     .pipe(gulp.dest(__dirname + '/dist'));
 });
 
-// TODO compile also javascript
+// inline assets into index.html - css, js, images
 gulp.task('inline', function() {
+
+  // TODO compile also javascript
   console.log('Inlining assets');
 
   return gulp.src(__dirname + '/dist/index.html')
@@ -89,42 +90,49 @@ gulp.task('inline', function() {
     .pipe(gulp.dest(baseDir));
 });
 
+// build jade into index.html
 gulp.task('jade-build', function() {
-  return gulp.src(__dirname + '/jade/index.jade')
-    .pipe(plumber())
-    .pipe(jade({
-      jade: jadeCompiler,
-      locals: {
-        config: config,
-        baseDir: baseDir,
-        render: jadeCompiler.renderFile
-      }
-    }))
-    .pipe(gulp.dest(__dirname + '/dist/'));
-});
-
-gulp.task('jade-devel', function() {
   console.log('Building courseware');
+  return jadeBuild();
+});
+
+// build jade into index.html with livereload server
+gulp.task('jade-devel', function() {
+  console.log('Building courseware with devel');
+  return jadeBuild(true);
+});
+
+/**
+ * Build jade into index.html
+ *
+ * @param {boolean} devel flag
+ **/
+function jadeBuild(devel) {
   return gulp.src(__dirname + '/jade/index.jade')
     .pipe(plumber())
     .pipe(jade({
       jade: jadeCompiler,
       locals: {
-        devel: true,
+        devel: devel,
         config: config,
         baseDir: baseDir,
         render: jadeCompiler.renderFile
       }
     }))
     .pipe(gulp.dest(__dirname + '/dist/'));
-});
+}
 
+/**
+ * Watch courseware internals
+ */
 gulp.task('watch-courseware', function() {
 
+  // watch less
   watch([__dirname + '/less/**/*.less'], batch(function(events, done) {
     gulp.start('css-build', done);
   }));
 
+  // watch sources for inlining
   var inlinePaths = [
     __dirname + '/app/**/*.js',
     __dirname + '/dist/*.css'];
@@ -133,13 +141,17 @@ gulp.task('watch-courseware', function() {
     gulp.start('inline', done);
   }));
 
+  // build jade into index.html
   watch([__dirname + '/jade/**/*.jade'], batch(function(events, done) {
     gulp.start('jade-devel', done);
   }));
 });
 
 // TODO should be able to rebuild also when courseware.json changed - it needs to reload config
+// watch host package and build final index.html
 gulp.task('watch', function() {
+
+  // watch jade templates of host package
   var paths = [
     baseDir + '/**/' + config.todoFilePath,
     config.introFilePath];
@@ -148,22 +160,25 @@ gulp.task('watch', function() {
     gulp.start('jade-devel', done);
   }));
 
+  // watch compiled index.html and inline into host package
   watch([__dirname + '/dist/index.html'], batch(function(events, done) {
     gulp.start('inline', done);
   }));
 });
 
+// run development server
 gulp.task('connect', function() {
   console.log('Running development server : http://localhost:' + config.develServerPort);
   console.log('Livereload is listening on : http://localhost:' + config.lifeReloadPort);
+
   livereload.listen(config.lifeReloadPort);
 
   var app = connect();
   app.use(serveStatic(baseDir));
   app.listen(config.develServerPort);
 
+  // livereload when final index.html is modified
   gulp.watch([config.baseDir + '/index.html']).on('change', function(filepath) {
-
     console.log('Reload courseware');
     livereload.changed(filepath, config.lifeReloadPort);
   });

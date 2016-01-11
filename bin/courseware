@@ -10,7 +10,9 @@ var yargs = require('yargs').usage('courseware <command>')
   .help('help');
 
 var argv = yargs.argv;
-switch (argv._[0]) {
+var command = argv._[0];
+
+switch (command) {
   case "init":
     init();
     break;
@@ -24,8 +26,8 @@ switch (argv._[0]) {
     runGulpTask('devel');
     break;
 
-  case "devel-devel":
-    runGulpTask('devel-devel');
+  case "courseware-devel":
+    runGulpTask('courseware-devel');
     break;
 
   default:
@@ -33,7 +35,6 @@ switch (argv._[0]) {
 }
 
 function init() {
-
   var defaultConfig = {
     "introFile": "courseware-intro.jade",
     "header": "CourseWare title",
@@ -44,8 +45,8 @@ function init() {
 
   var json = require('format-json');
   var fs = require('fs');
-  fs.writeFile(baseDir + '/courseware.json', json.plain(defaultConfig));
-  fs.writeFile(baseDir + '/courseware-intro.jade', 'h2 Welcome to our course');
+  fs.writeFileSync(baseDir + '/courseware.json', json.plain(defaultConfig));
+  fs.writeFileSync(baseDir + '/courseware-intro.jade', 'h2 Welcome to our course');
 
   console.log('Courseware initialization - courseware.json');
   console.log(' - Configuration file has been created - courseware.json');
