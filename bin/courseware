@@ -18,7 +18,6 @@ switch (command) {
     break;
 
   case "build":
-    console.log('Building courseware into index.html');
     runGulpTask('build');
     break;
 

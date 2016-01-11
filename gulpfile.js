@@ -127,6 +127,7 @@ function jadeBuild(devel) {
  */
 gulp.task('watch-courseware', function() {
 
+  console.log('Watching CourseWare internals');
   // watch less
   watch([__dirname + '/less/**/*.less'], batch(function(events, done) {
     gulp.start('css-build', done);
@@ -156,6 +157,9 @@ gulp.task('watch', function() {
     baseDir + '/**/' + config.todoFilePath,
     config.introFilePath];
 
+  console.log('Watching : ' + paths[0]);
+  console.log('           ' + paths[1]);
+
   watch(paths, batch(function(events, done) {
     gulp.start('jade-devel', done);
   }));
@@ -175,7 +179,11 @@ gulp.task('connect', function() {
 
   var app = connect();
   app.use(serveStatic(baseDir));
-  app.listen(config.develServerPort);
+  var server = app.listen(config.develServerPort);
+
+  if (config.testsSocketUrl) {
+    courseware.socketServer(server);
+  }
 
   // livereload when final index.html is modified
   gulp.watch([config.baseDir + '/index.html']).on('change', function(filepath) {
@@ -185,6 +193,7 @@ gulp.task('connect', function() {
 });
 
 gulp.task('courseware-devel', function() {
+
   runSequence(
     'devel',
     'watch-courseware'
@@ -193,6 +202,14 @@ gulp.task('courseware-devel', function() {
 
 // TODO spead up livereload, inlining looks to be slow
 gulp.task('devel', function() {
+
+  console.log('Running in development mode ...');
+
+  if (config.testsSocketUrl) {
+    config.testsSocketUrl = 'http://localhost:' + config.develServerPort;
+    console.log('Configuration testsSocketUrl has been overiden with: ' + config.testsSocketUrl);
+  }
+
   runSequence(
     ['jade-devel', 'css-build', 'connect'],
     'inline',
@@ -201,6 +218,8 @@ gulp.task('devel', function() {
 });
 
 gulp.task('build', function() {
+  console.log('Building courseware into index.html');
+
   runSequence(
     ['jade-build', 'css-build'],
     'inline'
