@@ -51,7 +51,7 @@
     }
   }
 
-  function TestsResults($stateParams, $rootScope, socketConnector, $injector) {
+  function TestsResults($rootScope, socketConnector, $injector) {
 
     this.resultLoaders = {};
 
@@ -62,10 +62,6 @@
       }
 
       return this.resultLoaders[todoName];
-    };
-
-    this.getResultsLoaderByRoute = function() {
-      return this.getResultsLoader($stateParams.name);
     };
 
     this.actualizeData_ = function(message) {

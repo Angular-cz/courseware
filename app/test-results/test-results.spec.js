@@ -22,17 +22,6 @@ describe('testResults service', function() {
     expect(loader).toBe(loader2);
   });
 
-  it('can instantiate loader according to the route', function() {
-    inject(function($stateParams) {
-      $stateParams.name = '01-basics';
-    });
-
-    spyOn(this.testResults, 'getResultsLoader');
-
-    var loader = this.testResults.getResultsLoaderByRoute();
-    expect(this.testResults.getResultsLoader).toHaveBeenCalledWith('01-basics');
-  });
-
   it('should register callback on socketConnector', function() {
     expect(this.socketConnector.onActualization).toHaveBeenCalled();
   });
