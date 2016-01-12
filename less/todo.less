@@ -1,4 +1,5 @@
 @import "../node_modules/bootstrap/less/bootstrap.less";
+@import "./bs-menu.less";
 
 @icon-font-path: "../node_modules/bootstrap/fonts/";
 
@@ -32,18 +33,12 @@ hint {
 }
 
 pagination {
-  div {
-    padding-top: 15px;
-    padding-bottom: 15px;
 
-    .prev, .next {
-      .btn;
-      .btn-info;
-    }
-
-    .next {
-      float: right;
-    }
+  .pager {
+    text-align: left;
+  }
+  .next {
+    float: right;
   }
 }
 
@@ -51,10 +46,20 @@ pagination {
   .btn;
   .btn-success;
   .btn-lg;
+  float: right;
+
+  i.glyphicon {
+    display: inline-block;
+    margin: 0 5px 0 5px;
+  }
 }
 
 .bigger-distance {
   margin-top: 30px;
+}
+
+h2 {
+  margin-top: 10px;
 }
 
 h4 {

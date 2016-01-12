@@ -1,3 +1,11 @@
-div
-  a.prev(ui-sref="todos.todo({name: pagination.prev})", ng-if='pagination.prev') <- {{pagination.prev}}
-  a.next(ui-sref="todos.todo({name: pagination.next})", ng-if='pagination.next') {{pagination.next}} ->
+nav
+  ul.pager
+    li
+      a.prev(ui-sref="todos.todo({name: pagination.prev})", ng-if='pagination.prev')
+        i.glyphicon.glyphicon-chevron-left
+        | {{pagination.prev}}
+    li
+      a.next(ui-sref="todos.todo({name: pagination.next})", ng-if='pagination.next')
+        | {{pagination.next}}
+        i.glyphicon.glyphicon-chevron-right
+  span.clearfix

@@ -1,8 +1,9 @@
 .menu
-  ul(class="nav nav-pills nav-stacked")
-    li(ui-sref-active-eq='active')
-      a(ui-sref='todos.index') Intro
-    li(ng-repeat='todo in vm.todos',ui-sref-active='active')
-      a(ui-sref='todos.todo({ name: todo})') {{todo}}
+  .bs-docs-sidebar
+    ul.nav
+      li(ui-sref-active-eq='active')
+        a(ui-sref='todos.index') Intro
+      li(ng-repeat='todo in vm.todos',ui-sref-active='active')
+        a(ui-sref='todos.todo({ name: todo})') {{todo}}
 
 div.main(ui-view="")

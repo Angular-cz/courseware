@@ -47,7 +47,10 @@ html(ng-app='ngCzCourseWare')
 
 body#top
   //- include header from config to main header
-  h1 !{config.header}
+  nav.navbar.navbar-default
+    .container-fluid
+      .navbar-header
+        a.navbar-brand(href='#') !{config.header}
 
   div.row(ui-view="")
 

@@ -1,7 +1,9 @@
-h2 Exercise - {{todo.current}}&nbsp;&nbsp;
-  a.open-exercise(href='/{{todo.current}}', target='_blank') Open exercise
+pagination.visible-xs
 
-pagination
+h2 Exercise - {{todo.current}}&nbsp;&nbsp;
+  a.open-exercise(href='/{{todo.current}}', target='_blank')
+    i.glyphicon.glyphicon-share
+    | Open exercise
 
 div
   ng-include(src="todo.template")
