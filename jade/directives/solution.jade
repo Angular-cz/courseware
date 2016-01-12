@@ -1,8 +1,13 @@
 div
-  div(ng-if="visible")
-    snippet(type="{{highlight}}")
-      ng-transclude
+  .panel.panel-warning(ng-if="visible")
+    .panel-heading(ng-show=1)
+      .panel-title Solution
+    .panel-body
+      snippet(type="{{highlight}}")
+        ng-transclude
 
   div(ng-if="!visible")
     .text-right
-      a(href="",ng-click="toggle()") Show solution
+      a(href="",ng-click="toggle()")
+        i.glyphicon.glyphicon-eye-open
+        | &nbsp;Show solution
