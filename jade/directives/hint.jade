@@ -1,13 +1,12 @@
-div
-  .panel.panel-info(ng-if="visible")
-    .panel-heading
-      i.i.glyphicon.glyphicon-info-sign
-      | &nbsp;Hint
+.panel.panel-info(ng-if="visible")
+  .panel-heading
+    i.i.glyphicon.glyphicon-info-sign
+    | &nbsp;Hint
 
-    .panel-body(ng-if="visible")
-      ng-transclude
+  .panel-body(ng-if="visible")
+    ng-transclude
 
-  div(ng-if="!visible")
-    a(href="",ng-click="toggle()")
-      i.glyphicon.glyphicon-info-sign
-      | &nbsp;Show hint
+div.link(ng-if="!visible")
+  a(href="",ng-click="toggle()")
+    i.glyphicon.glyphicon-info-sign
+    | &nbsp;Show hint
