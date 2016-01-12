@@ -35,6 +35,7 @@
   "main": "main.js",
   "devDependencies": {
     "angular-mocks": "^1.4.8",
+    "find-root": "^0.1.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.15",
     "karma-jasmine": "^0.3.6",

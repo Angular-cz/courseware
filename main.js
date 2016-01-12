@@ -2,7 +2,9 @@ var gulp = require('gulp');
 var path = require('path');
 var fs = require('fs');
 var Promise = require('promise');
+var findRoot = require('find-root');
 
+var baseDir = findRoot(process.cwd());
 var config = loadConfig();
 
 /**
@@ -12,8 +14,7 @@ function loadConfig() {
   // TODO check if exists
   // TODO default values
 
-  var baseDir = process.cwd();
-  var configName = baseDir + "/courseware.json";
+  var configName = path.join(baseDir, "courseware.json");
 
   return JSON.parse(fs.readFileSync(configName).toString());
 }
@@ -184,7 +185,6 @@ function initializeTestResults(karmaServer, cb) {
    */
   function karmaConfFilename(todo) {
     // TODO configurable file
-    var baseDir = process.cwd();
     return path.join(baseDir, todo, 'karma.conf.js');
   }
 }
@@ -197,7 +197,6 @@ module.exports.initializeTestResults = initializeTestResults;
  */
 function getTestResultsDir() {
   // TODO check config value
-  var baseDir = process.cwd();
   return path.join(baseDir, config.testsResultsPath);
 }
 
@@ -210,8 +209,34 @@ module.exports.getTestResultsDir = getTestResultsDir;
  * @returns {string} test-results filename
  */
 function getTestResultsFilename(todo) {
-  var baseDir = process.cwd();
   return path.join(baseDir, config.testsResultsPath, todo + '.json');
 }
 
 module.exports.getTestResultsFilename = getTestResultsFilename;
+
+/**
+ * Determine current exercise from config or process.cwd
+ *
+ * @param karmaConfig karma config
+ */
+function determineExerciseName(karmaConfig) {
+  var processCwd = process.cwd();
+
+  if (karmaConfig.configFile) {
+    var configDir = path.dirname(karmaConfig.configFile);
+    var exerciseName = path.basename(configDir);
+
+  }
+
+  if (config.todos.indexOf(exerciseName) == -1) {
+    var exerciseName = path.basename(process.cwd());
+  }
+
+  if (config.todos.indexOf(exerciseName) == -1) {
+    throw new Exception('Exercise wasnt determined', karmaConfig, processCwd);
+  }
+
+  return exerciseName;
+}
+
+module.exports.determineExerciseName = determineExerciseName;
