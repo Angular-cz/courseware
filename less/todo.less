@@ -3,6 +3,8 @@
 @import "./parts/bs-menu.less";
 @import "./parts/hint.less";
 @import "./parts/solution.less";
+@import "./parts/tests.less";
+@import "./parts/pagination.less";
 
 @icon-font-path: "../node_modules/bootstrap/fonts/";
 
@@ -25,18 +27,6 @@ body {
   font-style: italic;
 }
 
-pagination {
-
-  .next, .prev {
-    .btn;
-    .btn-default;
-  }
-
-  .next {
-    float: right;
-  }
-}
-
 .open-exercise {
   .btn;
   .btn-success;
@@ -55,13 +45,6 @@ pagination {
 
 h2 {
   margin-top: 10px;
-}
-
-h4 {
-  .tests {
-    padding-left: 5px;
-    font-size: 80%;
-  }
 }
 
 .info {
@@ -92,81 +75,3 @@ h4 {
   .well;
   padding: 10px;
 }
-
-.bs-callout(@color) {
-  display: block;
-  margin: 20px 0;
-  padding: 10px;
-
-  border: 1px solid #eee;
-  border-radius: 5px;
-
-  border-left: 5px solid @color;
-
-  h1, h2, h3, h4, h5, h6 {
-    margin-top: 0;
-    color: @color;
-  }
-}
-
-.bs-callout-primary {
-  .bs-callout(@brand-primary);
-}
-
-.bs-callout-danger {
-  .bs-callout(@brand-danger);
-}
-
-.bs-callout-warning {
-  .bs-callout(@brand-warning);
-}
-
-.bs-callout-info {
-  .bs-callout(@brand-info);
-}
-
-.bs-callout-success {
-  .bs-callout(@brand-success);
-}
-
-.tests {
-  &.passed {
-    .bs-callout-success;
-    h4 .icon {
-      .glyphicon;
-      .glyphicon-ok;
-
-    }
-  }
-  &.failed {
-    .bs-callout-danger;
-    h4 .icon {
-      .glyphicon;
-      .glyphicon-remove;
-    }
-  }
-
-  ul {
-    list-style-type: none;
-    padding-left: 20px;
-
-    li {
-      &.passed {
-        color: @brand-success;
-        .icon {
-          .glyphicon;
-          .glyphicon-ok;
-        }
-      }
-      &.failed {
-        color: @brand-danger;
-        .icon {
-          .glyphicon;
-          .glyphicon-remove;
-        }
-      }
-
-    }
-  }
-}
-
