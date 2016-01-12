@@ -2,7 +2,7 @@ div
   .panel.panel-warning(ng-if="visible")
     .panel-heading(ng-show=1)
       .panel-title
-        i.glyphicon.glyphicon-eye-open
+        i.ico
         | &nbsp;Solution
     .panel-body
       snippet(type="{{highlight}}")
@@ -11,5 +11,5 @@ div
   div(ng-if="!visible")
     .text-right
       a(href="",ng-click="toggle()")
-        i.glyphicon.glyphicon-eye-open
+        i.ico
         | &nbsp;Show solution
