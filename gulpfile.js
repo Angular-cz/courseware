@@ -62,7 +62,7 @@ jadeCompiler.filters.escape_ng = function(block) {
 
 // compile courseware less into css
 gulp.task('less', function() {
-  return gulp.src(__dirname + '/less/*.less')
+  return gulp.src(__dirname + '/less/todo.less')
     .pipe(plumber())
     .pipe(less())
     .pipe(gulp.dest(__dirname + '/dist'));
