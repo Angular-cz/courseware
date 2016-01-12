@@ -16,10 +16,12 @@
           controller: 'IndexCtrl',
           controllerAs: "vm"
         })
+
         .state('todos.index', {
           url: '',
           templateUrl: 'intro'
         })
+
         .state('todos.todo', {
             url: 'todo/:name',
             templateUrl: 'todo',

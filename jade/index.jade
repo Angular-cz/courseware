@@ -1,12 +1,15 @@
 html(ng-app='ngCzCourseWare')
   head
+    //- scripts attached in devel mode
     if devel
       script(src='http://localhost:' + config.lifeReloadPort + '/livereload.js')
 
+    //- vendor scripts
     script(src='/node_modules/angular/angular.min.js')
     script(src='/node_modules/angular-socket-io/socket.min.js')
     script(src='/node_modules/angular-ui-router/release/angular-ui-router.min.js')
 
+    //- courseware app
     script(src='/app/app.js')
     script(src='/app/controllers.js')
     script(src='/app/directives.js')
@@ -15,40 +18,50 @@ html(ng-app='ngCzCourseWare')
     script(src='/app/test-results/test-results-parser.js')
     script(src='/app/test-results/test-results-directive.js')
 
+    //- passing list of exercises to the angular value
     script
       | angular.module('ngCzCourseWare')
       | .value('todos', !{JSON.stringify(config.todos).replace(/<\//g, "<\\/")});
 
+    //- activate socket listening if socket is configured
     if config.testsSocketUrl
       script(src= config.testsSocketUrl + '/socket.io/socket.io.js')
       script.
+        //- if the io is loaded from socket server, then attache url to socketConnectorProvider
         if (typeof io !== 'undefined') {
           angular.module('ngCzCourseWare')
                   .config(function(socketConnectorProvider) {
                     socketConnectorProvider.setUrl('!{config.testsSocketUrl}');
                   });
           console.log('Socket server is runnning: !{config.testsSocketUrl}');
+
+        //- when socket server not running
         } else {
           console.log('Socket server is not runnning: !{config.testsSocketUrl}');
         }
 
     link(href="/dist/todo.css", rel="stylesheet")
 
+    //- include header from config to title
     title !{config.header}
 
 body#top
+  //- include header from config to main header
   h1 !{config.header}
 
   div.row(ui-view="")
 
+  //- create angular template for each of given exercises and load it from particular file
   each todoName in config.todos
     script(type='text/ng-template' id='todo-#{todoName}')
       div
         != render(baseDir + '/' + todoName + '/' + config.todoFilePath)
 
+  //- create template for homepage info template
   script(type='text/ng-template' id='intro')
     != render(config.introFilePath)
 
+  // angular templates for controllers and directives
   script(type='text/ng-template' id='todos')
     include todos
 
@@ -70,6 +83,7 @@ body#top
   script(type='text/ng-template' id='directive-snippet')
     include directives/snippet
 
+  //- footer
   div.footer
     hr
     p Created with angular.cz CourseWare.

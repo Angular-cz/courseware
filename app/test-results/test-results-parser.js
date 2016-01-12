@@ -1,9 +1,37 @@
 (function() {
   angular.module('ngCzCourseWare')
-    .service('testResultsParser', TestResultsParser)
+    .service('testResultsParser', TestResultsParser);
 
+  /**
+   * Parser of incomming test results to flat form suitable for displaying
+   *
+   * @constructor
+   */
   function TestResultsParser() {
 
+    /**
+     * Find particular todo in testResults
+     *
+     * TODO allow to find more then one todo in same request.
+     * TODO support for pending tests
+     *
+     * @param todo
+     * @param testResults
+     * @returns array of results with information about total and number of passed tests
+     *
+     *
+     * example: {
+     *   total: 3,
+     *   passed: 2,
+     *   tests: [
+     *     {
+     *       name: 'Test 1 (TODO 1.1)',
+     *       type: 'PASSED'
+     *     },
+     *     ...
+     *   ]
+     * }
+     */
     this.getResultsFor = function(todo, testResults) {
       var tests = this.getLinesFor(todo, testResults);
 
@@ -18,6 +46,18 @@
       return result;
     };
 
+    /**
+     * Filter lines which contains given todo in form of (TODO <todo>)
+     *
+     * @param todo
+     * @param testResults
+     * @returns array of results which contains todos in form
+     *
+     * {
+     *    name: 'Test name (TODO <todo>)',
+     *    type: 'FAILED'
+     * }
+     */
     this.getLinesFor = function(todo, testResults) {
       return testResults.filter(function(item) {
         var todoName = '(TODO ' + todo + ')';
@@ -25,7 +65,13 @@
       });
     };
 
-    this.getFlattened = function(data) {
+    /**
+     * Flattens tree structure of given results to the simple objects
+     *
+     * @param testResults
+     * @returns {Array}
+     */
+    this.getFlattened = function(testResults) {
 
       function Item(name, type) {
         this.name = name;
@@ -50,7 +96,7 @@
 
       var result = [];
 
-      parseData(data, '');
+      parseData(testResults, '');
 
       return result;
     }

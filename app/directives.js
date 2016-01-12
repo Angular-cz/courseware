@@ -5,6 +5,9 @@
     .directive('snippet', snippetDirective)
     .directive('solution', solutionDirective);
 
+  /**
+   * Directive for pagination, loads current name of todo from router and shows prev / next buttons when needed
+   */
   function paginationDirective() {
     return {
       restrict: "E",
@@ -20,6 +23,14 @@
     }
   }
 
+  /**
+   * Directive contains solution code and show it on demand
+   *
+   * When attribute visible is introduced, its shown by default
+   *
+   * TODO integrate highlighter
+   * TODO anylyze if visible is still usefull after snippet adition
+   */
   function solutionDirective() {
     return {
       restrict: "E",
@@ -43,6 +54,11 @@
     }
   }
 
+  /**
+   * Directive shows code snippet
+   *
+   * TODO integrate highlighter
+   */
   function snippetDirective() {
     return {
       restrict: "E",
@@ -59,6 +75,11 @@
     }
   }
 
+  /**
+   * Directive can contain hint and show it on demand
+   *
+   * TODO anylyze if visible is still usefull after snippet adition
+   */
   function hintDirective() {
     return {
       restrict: "E",

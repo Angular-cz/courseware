@@ -2,25 +2,52 @@
   angular.module('ngCzCourseWare')
     .directive('tests', testsDirective);
 
-  function testsDirective(testResults, $stateParams) {
+  /**
+   * Directive which shows test results, it takes name of todo which will be searched in results.
+   * Directives gather exercise name from router and ask for particular result loader
+   *
+   * When there are incoming test results, todo:actualized is fired and directive can reload.
+   * @param testResults
+   * @param $stateParams
+   */
+  function testsDirective() {
     return {
       restrict: 'E',
-      scope: {
+      templateUrl: "directive-tests",
+      scope: {},
+      bindToController: {
         todo: '@'
       },
-      templateUrl: "directive-tests",
-      link: function(scope) {
+      controller: testsDirectiveController,
+      controllerAs: 'tests'
+    };
+
+    function testsDirectiveController($scope, testResults, $stateParams) {
+
+      /**
+       * Load test results of this block
+       */
+      this.actualizeResults_ = function() {
         var loader = testResults.getResultsLoader($stateParams.name);
-        scope.results = loader.getResultsFor(scope.todo);
+        this.results = loader.getResultsFor(this.todo);
+      };
 
-        scope.$on('todo:actualized', function() {
-          scope.results = loader.getResultsFor(scope.todo);
-        });
+      this.actualizeResults_();
 
-        scope.isPassed = function() {
-          return scope.results && scope.results.passed === scope.results.total;
-        }
-      }
+      /**
+       * Check if all tests passes
+       *
+       * @returns {boolean}
+       */
+      this.isPassed = function() {
+        return this.results && this.results.passed === this.results.total;
+      };
+
+      // reaction on test results actualization
+      $scope.$on('todo:actualized', function() {
+        this.actualizeResults_();
+      }.bind(this));
+
     }
   }
 })();

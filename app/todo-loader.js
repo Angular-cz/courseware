@@ -2,6 +2,8 @@
   angular.module('ngCzCourseWare')
     .service('todoLoader', TodoLoader);
 
+  // TODO discuss if shouldn't gather current automatically - then possible rename to paginator
+  // TODO provider with todos instead of dependency
   function TodoLoader(todos) {
 
     this.todos = todos;
