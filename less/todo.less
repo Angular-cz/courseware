@@ -1,5 +1,7 @@
 @import "../node_modules/bootstrap/less/bootstrap.less";
-@import "./bs-menu.less";
+
+@import "./parts/bs-menu.less";
+@import "./parts/solution.less";
 
 @icon-font-path: "../node_modules/bootstrap/fonts/";
 
@@ -20,16 +22,6 @@ body {
   text-align: right;
   font-size: 9pt;
   font-style: italic;
-}
-
-hint {
-  div {
-    div {
-      .alert;
-      .alert-info;
-      padding: 10px;
-    }
-  }
 }
 
 pagination {
@@ -177,13 +169,3 @@ h4 {
   }
 }
 
-solution {
-  .panel-body {
-    padding:0;
-  }
-
-  pre {
-    margin: 0;
-    border:none;
-  }
-}

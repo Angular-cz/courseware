@@ -1,7 +1,9 @@
 div
   .panel.panel-warning(ng-if="visible")
     .panel-heading(ng-show=1)
-      .panel-title Solution
+      .panel-title
+        i.glyphicon.glyphicon-eye-open
+        | &nbsp;Solution
     .panel-body
       snippet(type="{{highlight}}")
         ng-transclude
