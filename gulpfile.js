@@ -21,6 +21,7 @@ var minifyCss = require('gulp-minify-css');
 var inlineAssets = require('gulp-inline-assets');
 var courseware = require("./main.js");
 var baseDir = process.cwd();
+var hljs = require('highlight.js');
 
 var configFile = courseware.loadConfig();
 
@@ -45,12 +46,12 @@ var config = {
 // escaping of html entities
 jadeCompiler.filters.escape = function(block) {
   return block
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/#/g, '&#35;')
-    .replace(/\\/g, '\\\\');
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/#/g, '&#35;')
+      .replace(/\\/g, '\\\\');
 };
 
 // TODO try to built into directives itself into template function
@@ -60,19 +61,37 @@ jadeCompiler.filters.escape_ng = function(block) {
   return '<span ng-non-bindable>' + escaped + '</span>';
 };
 
+jadeCompiler.filters.highlight = function(block) {
+  var highlighted = hljs.highlightAuto(block);
+  return '<span ng-non-bindable>' + highlighted.value + '</span>';
+};
+
+function registerHighlightFilter(key, value) {
+  jadeCompiler.filters['highlight-' + key] = function(block) {
+
+    var highlighted = hljs.highlight(value, block);
+    return '<span ng-non-bindable>' + highlighted.value + '</span>';
+  };
+}
+
+var hljsLanguages = require('./highlight.config.js');
+for (key in hljsLanguages) {
+  registerHighlightFilter(key, hljsLanguages[key]);
+};
+
 // compile courseware less into css
 gulp.task('less', function() {
   return gulp.src(__dirname + '/less/todo.less')
-    .pipe(plumber())
-    .pipe(less())
-    .pipe(gulp.dest(__dirname + '/dist'));
+      .pipe(plumber())
+      .pipe(less())
+      .pipe(gulp.dest(__dirname + '/dist'));
 });
 
 // inline linked assets into css, fonts, images ...
 gulp.task('css-build', ['less'], function() {
   return gulp.src(__dirname + '/dist/*.css')
-    .pipe(inlineAssets())
-    .pipe(gulp.dest(__dirname + '/dist'));
+      .pipe(inlineAssets())
+      .pipe(gulp.dest(__dirname + '/dist'));
 });
 
 // inline assets into index.html - css, js, images
@@ -82,12 +101,12 @@ gulp.task('inline', function() {
   console.log('Inlining assets');
 
   return gulp.src(__dirname + '/dist/index.html')
-    .pipe(inline({
-      base: __dirname,
-      //js: uglify,
-      css: minifyCss
-    }))
-    .pipe(gulp.dest(baseDir));
+      .pipe(inline({
+        base: __dirname,
+        //js: uglify,
+        css: minifyCss
+      }))
+      .pipe(gulp.dest(baseDir));
 });
 
 // build jade into index.html
@@ -109,17 +128,17 @@ gulp.task('jade-devel', function() {
  **/
 function jadeBuild(devel) {
   return gulp.src(__dirname + '/jade/index.jade')
-    .pipe(plumber())
-    .pipe(jade({
-      jade: jadeCompiler,
-      locals: {
-        devel: devel,
-        config: config,
-        baseDir: baseDir,
-        render: jadeCompiler.renderFile
-      }
-    }))
-    .pipe(gulp.dest(__dirname + '/dist/'));
+      .pipe(plumber())
+      .pipe(jade({
+        jade: jadeCompiler,
+        locals: {
+          devel: devel,
+          config: config,
+          baseDir: baseDir,
+          render: jadeCompiler.renderFile
+        }
+      }))
+      .pipe(gulp.dest(__dirname + '/dist/'));
 }
 
 /**
@@ -195,8 +214,8 @@ gulp.task('connect', function() {
 gulp.task('courseware-devel', function() {
 
   runSequence(
-    'devel',
-    'watch-courseware'
+      'devel',
+      'watch-courseware'
   );
 });
 
@@ -211,9 +230,9 @@ gulp.task('devel', function() {
   }
 
   runSequence(
-    ['jade-devel', 'css-build', 'connect'],
-    'inline',
-    'watch'
+      ['jade-devel', 'css-build', 'connect'],
+      'inline',
+      'watch'
   );
 });
 
@@ -221,8 +240,8 @@ gulp.task('build', function() {
   console.log('Building courseware into index.html');
 
   runSequence(
-    ['jade-build', 'css-build'],
-    'inline'
+      ['jade-build', 'css-build'],
+      'inline'
   );
 });
 
