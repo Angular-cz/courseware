@@ -24,12 +24,7 @@
   }
 
   /**
-   * Directive contains solution code and show it on demand
-   *
-   * When attribute visible is introduced, its shown by default
-   *
-   * TODO integrate highlighter
-   * TODO anylyze if visible is still usefull after snippet adition
+   * Directive contains solution code and show it on demand, or by default, if visible attribute is present
    */
   function solutionDirective() {
     return {
@@ -42,11 +37,6 @@
           scope.visible = true;
         }
 
-        scope.highlight = 'javascript';
-        if (attrs.hasOwnProperty('html')) {
-          scope.highlight = 'html';
-        }
-
         scope.toggle = function() {
           scope.visible = !scope.visible;
         }
@@ -56,29 +46,18 @@
 
   /**
    * Directive shows code snippet
-   *
-   * TODO integrate highlighter
    */
   function snippetDirective() {
     return {
       restrict: "E",
       templateUrl: "directive-snippet",
       transclude: true,
-      scope: true,
-      link: function(scope, elem, attrs) {
-        scope.highlight = 'javascript';
-
-        if (attrs.hasOwnProperty('html')) {
-          scope.highlight = 'html';
-        }
-      }
+      scope: true
     }
   }
 
   /**
-   * Directive can contain hint and show it on demand
-   *
-   * TODO anylyze if visible is still usefull after snippet adition
+   * Directive can contain hint and show it on demand, or by default, if visible attribute is present
    */
   function hintDirective() {
     return {

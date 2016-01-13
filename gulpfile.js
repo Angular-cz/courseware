@@ -61,6 +61,7 @@ jadeCompiler.filters.escape_ng = function(block) {
   return '<span ng-non-bindable>' + escaped + '</span>';
 };
 
+// TODO separate to multiple files
 jadeCompiler.filters.highlight = function(block) {
   var highlighted = hljs.highlightAuto(block);
   return '<span ng-non-bindable>' + highlighted.value + '</span>';

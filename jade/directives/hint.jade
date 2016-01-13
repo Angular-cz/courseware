@@ -1,7 +1,8 @@
 .panel.panel-info(ng-if="visible")
   .panel-heading
-    i.ico
-    | &nbsp;Hint
+    .panel-title
+      i.ico
+      | &nbsp;Hint
 
   .panel-body(ng-if="visible")
     ng-transclude
