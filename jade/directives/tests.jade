@@ -1,5 +1,5 @@
 div.tests(ng-if="tests.results", ng-class="{'passed' : tests.isPassed(), 'failed' : !tests.isPassed()}")
-  h4
+  h4(ng-if="tests.results.total > 1")
     span.icon
     |  {{tests.results.passed}} / {{tests.results.total}}
 
