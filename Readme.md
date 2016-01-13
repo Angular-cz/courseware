@@ -1,187 +1,115 @@
-#  TODO generator - www.angular.cz #
+# CourseWare exercise materials processor
 
-Toto je generátor nápověd k našim cvičením, a slouží výhradně pro nás. Pokud si jej prohlížíte, můžete se inspirovat ale je to zatím jednoúčelový nástroj, kde jsme na čistotu kódu moc nedbali.
+CourseWare is tool for generating interactive materials for your lectures.
 
-*Pracujeme na tom abychom jej opensourcovali a uvolnili pro nekomerční použití co nejdřív, pokud máte o podobné řešení zájem, ozvěte se nám*
+## Motivation
+When you start creating materials you ussualy starts with nothing, then you go through the text files and html pages and there 
+you come to the documentation generators. There you strugle with just text descriptions or invest your time and try to enhance the generator. 
 
-Každopádně použít jej bez našeho svolení zatím nesmíte.
+There comes the CourseWare, its documentation specialized generator for programming courses and lectures.
 
-## Technologie ##
+CourseWare is product of materials evolution end we use it regularly in our Javascript and AngularJS lectures - http://www.angular.cz. 
 
-Jade, Angualar, Bootstrap, Gulp, Npm
+### Features
+ - single file documentation
+ - generator from jade markup
+ - responsive layout
+ - components for hints and solutions
+ - source highlighter
+ - interactive integration of test results
 
-## Použití ##
+### Will CourseWare be useful for me ?
+You will get most benefits from CourseWare when you use it on some kind of javascript lectures. But it can serve also as platform independent documentation tool, because it produces single #[strong index.html] file.
 
-Začlenění do projektu
-``` 
-npm install angular-cz-courseware --save-dev
-```
+## Usage
 
-v package.json nápovědu zbuildovat pomocí
+There we will describe typical use-case when you have already your exercises in separate folders, where students are supposed 
+to edit source code and check the results in their browser.
 
-```
-courseware build
-```
-
-Zbuilduje todo do /index.html se všemi inline závislostmi.
-
-Pokud nechcete buildovat nápovědu spolus Vašim projektem, můžete využít rovnou zbuildovaný index.html, který obsahuje vše potřebné. 
-
-## Ladění nápovědy ##
-
-Můžete spustit vývojový server pomocí
+First install the npm package: 
 
 ```
-courseware devel
+npm install angular-cz-courseware
 ```
 
-Vývojový server se spustí na http://localhost:8080 a sleduje změny všech todo.jade a také courseware-intro.jade
-
-## Konfigurace ##
-
-Konfigurace se načítá ze souboru *courseware.json*
-
-Ukázka:
-
-```
-{
-  "introFile": "courseware-intro.jade",
-  "header": "Školení - Javascript - cvičení (www.angular.cz)",
-  "todoFile": "todo.jade",
-  "todoFilePath": "complete",
-  "todos": [
-    "01-basics",
-    "02-object-data-types",
-    "03-scope-and-closure",
-    "04-oop",
-    "05-exceptions",
-    "06-this-and-async",
-    "07-async-promise",
-    "08-dom",
-    "09-es6",
-    "10-backbone",
-    "11-ember",
-    "12-angular",
-    "13-react",
-    "99-backbone-extra",
-    "99-ember-extra",
-    "99-angular-extra"
-  ],
-  "testsSocketUrl" : "http://localhost:8000"
-
-}
-
-### Založení konfigurace ###
-
-Projekt můžete initcializovat pomocí
+Then create courseware configuration file **courseware.json** in the root of your package. 
+You can create default configuration file with command
 
 ```
 courseware init
 ```
 
-Vytvoří se courseware.json a courseware-intor.jade
-
-### Spouštění testů ###
-Courseware má podporu spouštění testů a aktualizace gui přes sockety.
-
-Aby toto fungovalo, je třeba udělat několik kroků
-
-#### Test runner
-
-Přidat do test runneru spec-json-reporter a výstupy nasměrovat do složky
-
-Příklad pro karma.
+Then add your exercise names to the **todos** array in the configuration file
 
 ```
-  config.plugins.push('karma-spec-json-reporter');
-
-  config.reporters.push('specjson');
-
-  var outPath = path.join(processDir, "test-results/", exerciseDir + '.json');
-
-  config.specjsonReporter = {
-    outputFile: outPath
-  };
+{
+  "introFile": "courseware-intro.jade",
+  "header": "CourseWare usage DEMO",
+  "todoFile": "todo.jade",
+  "todoFilePath": "complete",
+  "todos": [
+    "01-simple-generator",
+    "02-generator-with-tests"
+  ]
+}
 ```
 
-#### Socket server ####
-Aktivovat socket server, připojením na existující server a specifikovat složku s výsledky souborů
+This tell CourseWare to use **courseware-intro.jade** as homepage and finds exercise instructions file **todo.jade** in folder 
+**complete** of each item in exercises list.
 
-Ukázka z gulpfile
-```
-  var app = connect();
-  app.use(serveStatic('./'));
-  var server = app.listen(config.httpServer.port);
-
-  ...
-
-  var courseware = require('angular-cz-courseware');
-  courseware.socketServer(server, 'test-results');
-});
-```
-
-#### Konfigurace
-V courseware.json přidat informaci, kde běží server.
+It exactly reffers to our case, when each exercise folder lookd like the above. 
+Source files to edit are in its root and materials are in folder with finished exercise
 
 ```
-  "testsSocketUrl" : "http://localhost:8000"
+  |- 01-generator-with-tests
+     |- complete
+     |  |- app.js
+     |  |- index.html
+     |  |- todo.jade   <--- instructions for jade
+     |
+     |- app.js
+     |- index.html
 ```
 
-#### V todo popisech
-
-Použít v todo popisech direktivu pro zobrazení testů
+Then you can use CourseWare to build your materials into single index.html file using command
 
 ```
-tests(todo="3.3")
+courseware build
 ```
 
-V popisu testů v it / describe se pak musí objevit výraz (TODO 3.3)
+You can use it both as package which compiles your documentation when the host package is being installed. 
+Or globally just to generate single file documentation which is then included in repository.
 
-#### Použití
-
-Po startu http-serveru bude aplikace komunikovat se socket serverem a reagovat na změny, poté pusťte karma-runner pro příslušný příklad.
-
-Před startem je ještě nutno mít vytvořeny soubory s výsledky aby fungoval dobře watch. 
-
-### Struktura ###
-Generátor bere seznam souborů ze seznamu todos, ve stejném pořadí zobrazí menu a hledá šablony v jednotlivých cvičeních podle zadaného nastavení složky.
-
-### Jade ###
-
-Pro escapování html se používá **:ecape** a pro escapování expression, které by neměl zpracovat angular **:escape_ng**
-### Direktivy ###
-
-#### solution ####
-Zobrazí skrývatelný box s řešením kódu, standardně je brán jako javascript a je skrytý. 
- - Pomocí "visible" je možné jej zobrazit. 
- - "html" změní typ na html.
+### Develop mode
+When you develop your materials, livereload can help you a lot. You can run this mode with command
 
 ```
-solution.
-solution(visible, html).
+courseware devel
 ```
 
-zdrojový kód je také možné zapsat pomocí
+Development server will run on http://localhost:8080, adds livereload server to the index.html,
+and reload browser when some of todo.jade or courseware-intro.jade is changed.
 
-```
-pre
-  code.
-    your code... {}
-```
+### Example repository
 
+Do not forget to check the example repository where you can see typical javascript course structure. 
 
-#### hint ####
-Zobrazí skrývatelný box s nápovědou, standardně je skrytý. 
- - Pomocí "visible" je možné jej zobrazit. 
+CourseWare is there integrated as package dependency and index.html is build when host package installed.
 
+## Contribution
+We would be glad if you like this tool so much that you will help us to test this it, fix issues or create new features. 
+Also if you write some article or use it in public course, let us know we will list it here.
 
-```
-hint
-hint(visible)
-```
+### Technologies
+Courseware is based on well known and documented technologies: Npm, Gulp, Jade, Bootstrap, Socket.io, Highlight.js, AngularJS, Karma, Jasmine 
 
+... so you can also learn a lot about wide range of nice tools.
 
-#### Zviditelnění celé nápovědy - hack ####
-Obě direktivy mají zděděný scope a používají "visible" je možné je všechny rozbalit na stránce na jednou pomocí (ng-init="visible = true")
+## Licence
+CourseWare is free for non-commercial courses, and we would like to hear about your progress.
 
+If you want to use CourseWara on commercial course, or get comercial support do not hasitate to contact us.
 
+## Contact information
+
+| Web: http://www.angular.cz | Twitter: @angular_cz |
