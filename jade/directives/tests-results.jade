@@ -1,0 +1,24 @@
+div.panel(ng-class='{"panel-success": tests.isPassed(), "panel-danger": !tests.isPassed()}')
+  .panel-heading
+    .panel-title
+      h4
+        div(ng-if="tests.isPassed()")
+          i.ico
+          | &nbsp;Congratulations, all tests now passed!
+        div(ng-if="!tests.isPassed()")
+          i
+          | &nbsp;Some tests failed!
+        .pull-right(ng-if="tests.showTests")
+          div(ng-if="tests.results.total > 1")
+            span.icon
+            |  {{tests.results.passed}} / {{tests.results.total}}
+
+    ul.tests(ng-if="tests.showTests")
+      li(ng-repeat="test in tests.results.tests", ng-class="test.type|lowercase")
+        span.icon
+        |  {{test.name}}
+
+  .panel-body(ng-if="tests.hasTranscludedContent")
+    ng-transclude
+
+

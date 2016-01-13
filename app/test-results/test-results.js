@@ -80,7 +80,19 @@
       }
 
       return testResultsParser.getResultsFor(todo, this.lastResults);
-    }
+    };
+
+    /**
+     * Search for results without todo
+     */
+    this.getResultsWithoutTodo = function() {
+      if (!this.lastResults) {
+        return;
+      }
+
+      return testResultsParser.getResultsWithoutTodo(this.lastResults);
+    };
+
   }
 
   /**

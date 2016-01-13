@@ -13,11 +13,10 @@
      * Find particular todo in testResults
      *
      * TODO allow to find more then one todo in same request.
-     * TODO support for pending tests
      *
      * @param todo
      * @param testResults
-     * @returns array of results with information about total and number of passed tests
+     * @returns object with information about total and number of passed tests
      *
      *
      * example: {
@@ -33,8 +32,49 @@
      * }
      */
     this.getResultsFor = function(todo, testResults) {
-      var tests = this.getLinesFor(todo, testResults);
+      var filter = this.getFilterFor_(todo);
+      var tests = testResults.filter(function(item) {
+        return filter(item.name)
+      });
+      return this.getResults_(tests);
+    };
 
+    /**
+     * Find particular results without todo
+     *
+     * @param testResults
+     * @returns object of results (see this.getResults_)
+     */
+    this.getResultsWithoutTodo = function(testResults) {
+      var tests = testResults.filter(function(item) {
+        var todoName = '(TODO ';
+        return item.name.indexOf(todoName) > -1
+      });
+
+      return this.getResults_(tests);
+    };
+
+    /**
+     * @private
+     *
+     * @param tests
+     * @returns object with information about total and number of passed tests
+     *
+     * TODO support for pending tests
+     *
+     * example: {
+     *   total: 3,
+     *   passed: 2,
+     *   tests: [
+     *     {
+     *       name: 'Test 1 (TODO 1.1)',
+     *       type: 'PASSED'
+     *     },
+     *     ...
+     *   ]
+     * }
+     */
+    this.getResults_ = function(tests) {
       var result = {};
       result.total = tests.length;
       result.passed = tests.filter(function(item) {
@@ -49,20 +89,27 @@
     /**
      * Filter lines which contains given todo in form of (TODO <todo>)
      *
+     * @private
      * @param todo
-     * @param testResults
-     * @returns array of results which contains todos in form
-     *
-     * {
-     *    name: 'Test name (TODO <todo>)',
-     *    type: 'FAILED'
-     * }
+     * @returns function usable as array filter
      */
-    this.getLinesFor = function(todo, testResults) {
-      return testResults.filter(function(item) {
-        var todoName = '(TODO ' + todo + ')';
-        return item.name.indexOf(todoName) > -1
+    this.getFilterFor_ = function(todo) {
+      if (!todo) {
+        return function() {
+          return true;
+        };
+      }
+
+      var todos = todo.split(',');
+      var todoNames = todos.map(function(todo) {
+        return '(TODO ' + todo + ')'
       });
+
+      var escapedNames = todoNames.map(regexpEscape);
+
+      var regExp = new RegExp('(' + escapedNames.join(')|(') + ')', 'i');
+
+      return regExp.test.bind(regExp);
     };
 
     /**
@@ -102,3 +149,7 @@
     }
   }
 })();
+
+function regexpEscape(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
