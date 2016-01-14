@@ -1,4 +1,4 @@
-div.panel(ng-class='{"panel-success": tests.isPassed(), "panel-danger": !tests.isPassed()}')
+div.tests-results.panel(ng-class='{"panel-success": tests.isPassed(), "panel-danger": !tests.isPassed()}')
   .panel-heading
     .panel-title
       .pull-right(ng-if="!tests.showTests")
