@@ -32,7 +32,7 @@
      * }
      */
     this.getResultsFor = function(todo, testResults) {
-      var filter = this.getFilterFor_(todo);
+      var filter = this.filterFactory_(todo);
       var tests = testResults.filter(function(item) {
         return filter(item.name)
       });
@@ -91,23 +91,23 @@
      *
      * @private
      * @param todo
+     * @param boolean exact (default false)
      * @returns function usable as array filter
      */
-    this.getFilterFor_ = function(todo) {
+    this.filterFactory_ = function(todo, exact) {
+      var regexpSufix = '[\\.\\d]*';
+      if (exact) {
+        regexpSufix = '';
+      }
+
       if (!todo) {
         return function() {
           return true;
         };
       }
 
-      var todos = todo.split(',');
-      var todoNames = todos.map(function(todo) {
-        return '(TODO ' + todo + ')'
-      });
-
-      var escapedNames = todoNames.map(regexpEscape);
-
-      var regExp = new RegExp('(' + escapedNames.join(')|(') + ')', 'i');
+      var todoName = '\\(TODO ' + regexpEscape(todo) + regexpSufix + '\\)';
+      var regExp = new RegExp(todoName, 'i');
 
       return regExp.test.bind(regExp);
     };

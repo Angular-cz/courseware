@@ -181,34 +181,39 @@ describe('testResultsParser service', function() {
 
   describe('method getFilterFor', function() {
     it('filter for one item', function() {
+      var test = this.testResultsParser.filterFactory_('1.1');
 
-      var test = this.testResultsParser.getFilterFor_('1.1');
       expect(test('some text with todo (TODO 1.1)')).toBe(true);
       expect(test('other text without todo (TODO 1.2)')).toBe(false);
 
     });
 
     it('filter for all', function() {
+      var test = this.testResultsParser.filterFactory_();
 
-      var test = this.testResultsParser.getFilterFor_();
       expect(test('some text with todo (TODO 1.1)')).toBe(true);
       expect(test('other text without todo (TODO 1.2)')).toBe(true);
       expect(test('other text without todo')).toBe(true);
 
     });
 
+    it('filter accept hierarchy', function() {
+      var test = this.testResultsParser.filterFactory_('1');
 
-    it('filter for multiple items', function() {
-
-      var test = this.testResultsParser.getFilterFor_('1.1,2.1');
       expect(test('some text with todo (TODO 1.1)')).toBe(true);
-      expect(test('other text without todo (TODO 1.2)')).toBe(false);
-      expect(test('other text without todo (TODO 1.3)')).toBe(false);
+      expect(test('some text with todo (TODO 1.1.1)')).toBe(true);
+      expect(test('other text without todo (TODO 1.2.1.2)')).toBe(true);
+      expect(test('other text without todo (TODO 2.1)')).toBe(false);
+    });
 
-      expect(test('some text with todo (TODO 2.1)')).toBe(true);
-      expect(test('other text without todo (TODO 2.2)')).toBe(false);
-      expect(test('other text without todo (TODO 2.3)')).toBe(false);
+    it('filter can be exact', function() {
+      var exact = true;
+      var test = this.testResultsParser.filterFactory_('1.1', exact);
 
+      expect(test('some text with todo (TODO 1.1)')).toBe(true);
+      expect(test('some text with todo (TODO 1.1.1)')).toBe(false);
+      expect(test('other text without todo (TODO 1.2.1.2)')).toBe(false);
+      expect(test('other text without todo (TODO 2.1)')).toBe(false);
     });
 
   });
