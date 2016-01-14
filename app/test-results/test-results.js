@@ -1,7 +1,7 @@
 (function() {
   angular.module('ngCzCourseWare')
     .service('testResults', TestsResults)
-    .provider('socketConnector', SocketConnector)
+    .provider('socketConnector', SocketConnector);
 
   /**
    * Connector to socket server
@@ -73,13 +73,14 @@
     /**
      * Search for results of given todo (TODO 1.2) ...
      * @param todo
+     * @param exact
      */
-    this.getResultsFor = function(todo) {
+    this.getResultsFor = function(todo, exact) {
       if (!this.lastResults) {
         return;
       }
 
-      return testResultsParser.getResultsFor(todo, this.lastResults);
+      return testResultsParser.getResultsFor(this.lastResults, todo, exact);
     };
 
     /**

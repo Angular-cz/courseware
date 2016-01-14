@@ -30,7 +30,7 @@
         if ($attrs.hasOwnProperty('withoutTodo')) {
           return loader.getResultsWithoutTodo()
         } else {
-          return loader.getResultsFor(this.todo)
+          return loader.getResultsFor(this.todo, $attrs.hasOwnProperty('exact'));
         }
       };
 
@@ -75,17 +75,11 @@
       transclude: true,
       scope: {},
       controller: testsResultsDirectiveController,
-      controllerAs: 'tests',
-      link: function(s, e, a, controller, transcludeFn) {
-        transcludeFn(function(clone) {
-          controller.hasTranscludedContent = Boolean(clone.text().length)
-        });
-      }
+      controllerAs: 'tests'
     };
 
     function testsResultsDirectiveController($scope, testResults, $stateParams, $attrs) {
-      this.hasTranscludedContent = false;
-      this.showTests = $attrs.hasOwnProperty('showTests');
+      this.showTests = !$attrs.hasOwnProperty('titleOnly');
 
       /**
        * Load test results of this block

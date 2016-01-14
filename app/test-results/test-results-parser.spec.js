@@ -16,37 +16,41 @@ describe('testResultsParser service', function() {
         {name: 'second (TODO 1.2)'}
       ];
 
-      var results = this.testResultsParser.getResultsFor('1.1', testResults);
+      var results = this.testResultsParser.getResultsFor(testResults, '1.1');
       expect(results.total).toBe(1);
       expect(results.tests[0].name).toMatch('first');
     });
 
-    it('returns multiple lines for given todo number', function() {
+    it('returns multiple lines for given todo number, or hierarchy', function() {
       var testResults = [
         {name: 'first (TODO 1.1)'},
         {name: 'second (TODO 1.2)'},
-        {name: 'third (TODO 1.1)'}
+        {name: 'third (TODO 1.1)'},
+        {name: 'fourth (TODO 1.1.1)'}
       ];
 
-      var results = this.testResultsParser.getResultsFor('1.1', testResults);
+      var results = this.testResultsParser.getResultsFor(testResults, '1.1');
+      expect(results.total).toBe(3);
+      expect(results.tests[0].name).toMatch('first');
+      expect(results.tests[1].name).toMatch('third');
+      expect(results.tests[2].name).toMatch('fourth');
+    });
+
+    it('can be restricted to exact match', function() {
+      var testResults = [
+        {name: 'first (TODO 1.1)'},
+        {name: 'second (TODO 1.2)'},
+        {name: 'third (TODO 1.1)'},
+        {name: 'fourth (TODO 1.1.1)'}
+      ];
+
+      var exact = true
+      var results = this.testResultsParser.getResultsFor(testResults, '1.1', exact);
       expect(results.total).toBe(2);
       expect(results.tests[0].name).toMatch('first');
       expect(results.tests[1].name).toMatch('third');
     });
 
-    it('returns lines for multiple todo numbers', function() {
-      pending();
-      var testResults = [
-        {name: 'first (TODO 1.1)'},
-        {name: 'second (TODO 1.2)'},
-        {name: 'nono (TODO 1.3)'}
-      ];
-
-      var results = this.testResultsParser.getResultsFor('1.1,1.2', testResults);
-      expect(results.total).toBe(2);
-      expect(results.tests[0].name).toMatch('first');
-      expect(results.tests[1].name).toMatch('second');
-    });
 
   });
 
@@ -159,7 +163,7 @@ describe('testResultsParser service', function() {
         {name: 'third'}
       ];
 
-      var results = this.testResultsParser.getResultsFor(undefined, testResults);
+      var results = this.testResultsParser.getResultsFor(testResults);
       expect(results.total).toBe(3);
     });
 

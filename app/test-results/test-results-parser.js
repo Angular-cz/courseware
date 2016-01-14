@@ -14,8 +14,10 @@
      *
      * TODO allow to find more then one todo in same request.
      *
-     * @param todo
+     *
      * @param testResults
+     * @param todo
+     * @param exact
      * @returns object with information about total and number of passed tests
      *
      *
@@ -31,8 +33,8 @@
      *   ]
      * }
      */
-    this.getResultsFor = function(todo, testResults) {
-      var filter = this.filterFactory_(todo);
+    this.getResultsFor = function(testResults, todo, exact) {
+      var filter = this.filterFactory_(todo, exact);
       var tests = testResults.filter(function(item) {
         return filter(item.name)
       });

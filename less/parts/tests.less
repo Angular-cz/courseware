@@ -1,5 +1,13 @@
 
 .bs-callout(@color) {
+  border-left: 5px solid @color;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: @color;
+  }
+}
+
+.tests {
   display: block;
   margin: 20px 0;
   padding: 10px;
@@ -7,41 +15,15 @@
   border: 1px solid #eee;
   border-radius: 5px;
 
-  border-left: 5px solid @color;
-
   h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
-    color: @color;
   }
-}
-
-.bs-callout-primary {
-  .bs-callout(@brand-primary);
-}
-
-.bs-callout-danger {
-  .bs-callout(@brand-danger);
-}
-
-.bs-callout-warning {
-  .bs-callout(@brand-warning);
-}
-
-.bs-callout-info {
-  .bs-callout(@brand-info);
-}
-
-.bs-callout-success {
-  .bs-callout(@brand-success);
-}
-
-.tests {
 
   &.passed {
-    .bs-callout-success;
+    .bs-callout(@brand-success);
   }
   &.failed {
-    .bs-callout-danger;
+    .bs-callout(@brand-danger);
   }
 
   .passed, &.passed {
@@ -70,7 +52,8 @@
 
   ul {
     list-style-type: none;
-    padding-left: 20px;
+    padding-left: 15px;
+    margin-bottom: 3px;
   }
 }
 
