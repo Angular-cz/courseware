@@ -44,7 +44,7 @@ describe('testResultsParser service', function() {
         {name: 'fourth (TODO 1.1.1)'}
       ];
 
-      var exact = true
+      var exact = true;
       var results = this.testResultsParser.getResultsFor(testResults, '1.1', exact);
       expect(results.total).toBe(2);
       expect(results.tests[0].name).toMatch('first');
