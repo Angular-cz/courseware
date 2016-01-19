@@ -45,8 +45,7 @@ Then add your exercise names to the **todos** array in the configuration file
 {
   "introFile": "courseware-intro.jade",
   "header": "CourseWare usage DEMO",
-  "todoFile": "todo.jade",
-  "todoFilePath": "complete",
+  "todoFilePath": "complete/todo.jade",
   "todos": [
     "01-simple-generator",
     "02-generator-with-tests"

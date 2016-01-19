@@ -37,7 +37,7 @@ var config = {
   todos: configFile.todos,
   baseDir: baseDir,
   introFilePath: path.join(baseDir, configFile.introFile),
-  todoFilePath: path.join(configFile.todoFilePath, configFile.todoFile),
+  todoFilePath: configFile.todoFilePath,
   lifeReloadPort: 35730,
   develServerPort: 8080,
   testsSocketUrl: configFile.testsSocketUrl

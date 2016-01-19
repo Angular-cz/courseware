@@ -37,8 +37,7 @@ function init() {
   var defaultConfig = {
     "introFile": "courseware-intro.jade",
     "header": "CourseWare title",
-    "todoFile": "todo.jade",
-    "todoFilePath": "complete",
+    "todoFilePath": "complete/todo.jade",
     "todos": []
   };
 
