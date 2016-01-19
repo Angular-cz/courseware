@@ -21,7 +21,7 @@ CourseWare is product of materials evolution end we use it regularly in our Java
 ### Will CourseWare be useful for me ?
 You will get most benefits from CourseWare when you use it on some kind of javascript lectures. But it can serve also as platform independent documentation tool, because it produces single #[strong index.html] file.
 
-## Usage
+## Brief info about usage
 
 There we will describe typical use-case when you have already your exercises in separate folders, where students are supposed 
 to edit source code and check the results in their browser.
@@ -104,10 +104,26 @@ Courseware is based on well known and documented technologies: Npm, Gulp, Jade, 
 
 ... so you can also learn a lot about wide range of nice tools.
 
-## Licence
-CourseWare is free for non-commercial courses, and we would like to hear about your progress.
+### How to develop CourseWare
 
-If you want to use CourseWara on commercial course, or get comercial support do not hasitate to contact us.
+Clone this package and link the copy to the npm via
+
+```
+npm link
+```
+
+Then use examples as host package and run development server inside the examples package with command
+
+```
+courseware courseware-devel
+```
+
+Then checks and livereload are also provided for CourseWare internals.
+
+## Licence
+CourseWare is free for non-commercial and internal courses, and we would like to hear about your progress.
+
+If you want to use CourseWare on commercial course, or get comercial support do not hasitate to contact us.
 
 ## Contact information
 
