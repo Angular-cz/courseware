@@ -7,6 +7,7 @@ var yargs = require('yargs').usage('courseware <command>')
   .command('init', 'create initial congiguration')
   .command('build', 'build index.html courseware')
   .command('devel', 'run development server with livereload')
+  .command('courseware-devel', 'run development mode which do livereload also CourseWare internals')
   .help('help');
 
 var argv = yargs.argv;

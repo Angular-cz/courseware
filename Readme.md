@@ -106,7 +106,7 @@ Courseware is based on well known and documented technologies: Npm, Gulp, Jade, 
 
 ### How to develop CourseWare
 
-Clone this package and link the copy to the npm via
+Clone this package and link the cloned copy to the npm via
 
 ```
 npm link
