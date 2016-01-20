@@ -1,6 +1,6 @@
 # CourseWare exercise materials processor
 
-CourseWare is tool for generating interactive materials for your lectures.
+CourseWare is a tool for generating interactive materials for your lectures.
 
 ## Motivation
 When you start creating materials you ussualy starts with nothing, then you go through the text files and html pages and there 
@@ -48,7 +48,8 @@ Then add your exercise names to the **todos** array in the configuration file
   "todoFilePath": "complete/todo.jade",
   "todos": [
     "01-simple-generator",
-    "02-generator-with-tests"
+    "02-generator-with-tests",
+    "03-sandbox"
   ]
 }
 ```
@@ -89,9 +90,11 @@ courseware devel
 Development server will run on http://localhost:8080, adds livereload server to the index.html,
 and reload browser when some of todo.jade or courseware-intro.jade is changed.
 
-### Example repository
+### Examples repository as a full documentation
 
-Do not forget to check the example repository where you can see typical javascript course structure. 
+Definitely check the example repository where you can see typical javascript course structure. 
+It will help you to understand how to use CouseWare in your course.
+It contains not only DEMO course but also style galery and documentation. https://github.com/Angular-cz/courseware-examples
 
 CourseWare is there integrated as package dependency and index.html is build when host package installed.
 
