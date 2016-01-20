@@ -30,12 +30,12 @@ html(ng-app='ngCzCourseWare')
         //- if the io is loaded from socket server, then attache url to socketConnectorProvider
         if (typeof io !== 'undefined') {
           angular.module('ngCzCourseWare')
-                  .config(function(socketConnectorProvider) {
-                    socketConnectorProvider.setUrl('!{config.testsSocketUrl}');
-                  });
+            .config(function(socketConnectorProvider) {
+              socketConnectorProvider.setUrl('!{config.testsSocketUrl}');
+            });
           console.log('Socket server is runnning: !{config.testsSocketUrl}');
 
-        //- when socket server not running
+          //- when socket server not running
         } else {
           console.log('Socket server is not runnning: !{config.testsSocketUrl}');
         }
@@ -92,4 +92,7 @@ body#top
   //- footer
   div.footer
     hr
-    p Created with angular.cz CourseWare.
+    p
+      | Created with&nbsp;
+      a(href="https://github.com/Angular-cz/courseware", target="_blank") angular.cz CourseWare
+      | .
