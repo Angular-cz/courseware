@@ -2,6 +2,8 @@
 
 CourseWare is a tool for generating interactive materials for your lectures.
 
+You can see DEMO materials here: https://angular-cz-courseware-examples.herokuapp.com
+
 ## Motivation
 When you start creating materials you ussualy starts with nothing, then you go through the text files and html pages and there 
 you come to the documentation generators. There you strugle with just text descriptions or invest your time and try to enhance the generator. 
@@ -97,6 +99,8 @@ It will help you to understand how to use CouseWare in your course.
 It contains not only DEMO course but also style galery and documentation. https://github.com/Angular-cz/courseware-examples
 
 CourseWare is there integrated as package dependency and index.html is build when host package installed.
+
+You can see examples and read documentation here: https://angular-cz-courseware-examples.herokuapp.com
 
 ## Contribution
 We would be glad if you like this tool so much that you will help us to test this it, fix issues or create new features. 
