@@ -1,0 +1,19 @@
+{
+  "name": "angular-cz-courseware",
+  "description": "",
+  "main": "main.js",
+  "authors": [
+    "angular@angular.cz"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Angular-cz/courseware",
+  "moduleType": [],
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "highlightjs": "~9.1.0",
+    "angular": "~1.4.8",
+    "angular-ui-router": "~0.2.15",
+    "angular-socket-io": "~0.7.0"
+  }
+}
