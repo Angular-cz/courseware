@@ -7,7 +7,7 @@
     "angular-socket-io": "^0.7.0",
     "angular-ui-router": "^0.2.15",
     "bootstrap": "^3.3.6",
-    "bower": "^1.7.3",
+    "bower": "^1.7.2",
     "connect": "^3.4.0",
     "find-root": "^0.1.1",
     "format-json": "^1.0.3",
@@ -45,7 +45,7 @@
     "phantomjs": "^1.9.19",
     "phantomjs-polyfill": "0.0.1"
   },
-  "scripts" : {
-    "postinstall" : "bower install"
+  "scripts": {
+    "postinstall": "bower install"
   }
 }
