@@ -40,7 +40,8 @@ var config = {
   todoFilePath: configFile.todoFilePath,
   lifeReloadPort: 35730,
   develServerPort: 8080,
-  testsSocketUrl: configFile.testsSocketUrl
+  testsSocketUrl: configFile.testsSocketUrl || "",
+  testsSocket: (configFile.testsSocket || configFile.testsSocketUrl) ? true : false
 };
 
 // escaping of html entities
@@ -201,7 +202,7 @@ gulp.task('connect', function() {
   app.use(serveStatic(baseDir));
   var server = app.listen(config.develServerPort);
 
-  if (config.testsSocketUrl) {
+  if (config.testsSocket) {
     courseware.socketServer(server);
   }
 
@@ -226,8 +227,9 @@ gulp.task('devel', function() {
   console.log('Running in development mode ...');
 
   if (config.testsSocketUrl) {
-    config.testsSocketUrl = 'http://localhost:' + config.develServerPort;
-    console.log('Configuration testsSocketUrl has been overiden with: ' + config.testsSocketUrl);
+    config.testsSocket = true;
+    config.testsSocketUrl = '';
+    console.log('Configuration testsSocketUrl has been removed: ' + config.testsSocketUrl);
   }
 
   runSequence(

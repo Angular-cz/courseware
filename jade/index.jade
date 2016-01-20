@@ -24,20 +24,25 @@ html(ng-app='ngCzCourseWare')
       | .value('todos', !{JSON.stringify(config.todos).replace(/<\//g, "<\\/")});
 
     //- activate socket listening if socket is configured
-    if config.testsSocketUrl
-      script(src= config.testsSocketUrl + '/socket.io/socket.io.js')
+    if config.testsSocket
+      script(src= config.testsSocketUrl + 'socket.io/socket.io.js')
       script.
         //- if the io is loaded from socket server, then attache url to socketConnectorProvider
         if (typeof io !== 'undefined') {
+          var url = '!{config.testsSocketUrl}';
+          if (!url) {
+            url = window.location.origin;
+          }
+
           angular.module('ngCzCourseWare')
             .config(function(socketConnectorProvider) {
-              socketConnectorProvider.setUrl('!{config.testsSocketUrl}');
+              socketConnectorProvider.setUrl(url);
             });
-          console.log('Socket server is runnning: !{config.testsSocketUrl}');
+          console.log('Socket server is runnning: ' + url);
 
           //- when socket server not running
         } else {
-          console.log('Socket server is not runnning: !{config.testsSocketUrl}');
+          console.log('Socket server is not runnning: ' + url);
         }
 
     link(href="/dist/todo.css", rel="stylesheet")
