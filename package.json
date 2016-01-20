@@ -9,6 +9,7 @@
     "angular-ui-router": "^0.2.15",
     "bootstrap": "^3.3.6",
     "connect": "^3.4.0",
+    "find-root": "^0.1.1",
     "format-json": "^1.0.3",
     "gulp": "^3.9.0",
     "gulp-batch": "^1.0.5",
@@ -24,6 +25,7 @@
     "highlight.js": "^9.1.0",
     "http-server": "^0.8.0",
     "jade": "^1.11.0",
+    "promise": "^7.1.1",
     "proxy-middleware": "^0.13.1",
     "run-sequence": "^1.1.2",
     "serve-static": "^1.10.0",
@@ -36,13 +38,11 @@
   "main": "main.js",
   "devDependencies": {
     "angular-mocks": "^1.4.8",
-    "find-root": "^0.1.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.15",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.3",
     "phantomjs": "^1.9.19",
     "phantomjs-polyfill": "0.0.1",
-    "promise": "^7.1.1"
   }
 }
