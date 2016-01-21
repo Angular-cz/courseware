@@ -13,7 +13,6 @@ var runSequence = require('run-sequence');
 var connect = require('connect');
 var serveStatic = require('serve-static');
 var fs = require('fs');
-var proxy = require('proxy-middleware');
 var url = require('url');
 var less = require('gulp-less');
 var uglify = require('gulp-uglify');
