@@ -5,7 +5,7 @@
   "homepage": "https://angular-cz-courseware-examples.herokuapp.com",
   "repository": {
     "type": "git",
-    "url": "ghttps://github.com/Angular-cz/courseware.git"
+    "url": "git+https://github.com/Angular-cz/courseware.git"
   },
   "bugs": {
     "url": "https://github.com/Angular-cz/courseware/issues"
