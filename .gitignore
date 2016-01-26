@@ -1,5 +1,6 @@
 index.html
 node_modules
+npm-debug.log
 bower_components
 dist
 .idea
