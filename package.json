@@ -49,8 +49,7 @@
     "karma": "^0.13.15",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.3",
-    "phantomjs": "^1.9.19",
-    "phantomjs-polyfill": "0.0.1"
+    "phantomjs": "^2.1.2",
   },
   "scripts": {
     "postinstall": "bower install"
