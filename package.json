@@ -1,6 +1,6 @@
 {
   "name": "angular-cz-courseware",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "angular@angular.cz",
   "homepage": "https://angular-cz-courseware-examples.herokuapp.com",
   "repository": {
@@ -49,7 +49,7 @@
     "karma": "^0.13.15",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^1.0.0",
-    "phantomjs": "^2.1.2"
+    " phantomjs-prebuilt": "^2.1.4"
   },
   "scripts": {
     "postinstall": "bower install"
