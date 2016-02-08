@@ -80,6 +80,14 @@ function connectTestResultsSocket(server) {
       socket.emit('testResults', results);
     });
   });
+
+  return {
+    notify: function(eventName, data) {
+      listeningSockets.map(function(socket) {
+        socket.emit(eventName, data);
+      });
+    }
+  };
 }
 
 module.exports.socketServer = connectTestResultsSocket;
