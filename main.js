@@ -45,10 +45,10 @@ function connectTestResultsSocket(server) {
     socket.on('resultRequest', function(todoName) {
       var todoResultPath = getTestResultsFilename(todoName);
       var results = loadTestResults(todoResultPath);
-
-      console.log('Courseware: Test results sent on request :' + results.exercise);
-
-      socket.emit('testResults', results);
+      if (results) {
+        console.log('Courseware: Test results sent on request :' + results.exercise);
+        socket.emit('testResults', results);
+      }
     });
 
     // attach current listener
@@ -74,11 +74,12 @@ function connectTestResultsSocket(server) {
 
   gulp.watch(todoResultsPath, function(change) {
     var results = loadTestResults(change.path);
-    console.log('Courseware: Test results actualized :' + results.exercise);
-
-    listeningSockets.map(function(socket) {
-      socket.emit('testResults', results);
-    });
+    if (results) {
+      console.log('Courseware: Test results actualized :' + results.exercise);
+      listeningSockets.map(function(socket) {
+        socket.emit('testResults', results);
+      });
+    }
   });
 
   return {
@@ -97,16 +98,20 @@ module.exports.socketServer = connectTestResultsSocket;
  *
  * @param todoResultPath path of json file
  * @returns {{exercise, data}} object with named test results
+ * @todo consider using exceptions
  */
 function loadTestResults(todoResultPath) {
   var data = fs.readFileSync(todoResultPath);
 
-  var results = {
-    exercise: path.basename(todoResultPath, '.json'),
-    data: JSON.parse(data.toString())
-  };
-
-  return results;
+  try {
+    return {
+      exercise: path.basename(todoResultPath, '.json'),
+      data: JSON.parse(data.toString())
+    };
+  } catch (error) {
+    console.warn('Courseware: Parsing test results', todoResultPath, 'failed with error',  error.message);
+    return false;
+  }
 }
 
 /**
