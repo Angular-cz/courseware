@@ -34,7 +34,7 @@ to edit source code and check the results in their browser.
 First install the npm package: 
 
 ```
-npm install angular-cz-courseware
+npm install courseware
 ```
 
 Then create courseware configuration file **courseware.json** in the root of your package. 
