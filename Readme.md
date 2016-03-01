@@ -1,5 +1,7 @@
 # CourseWare exercise materials processor
 
+**Package has been renamed to courseware, this package is deprecated**
+
 CourseWare is a tool for generating interactive materials for your lectures.
 
 You can see DEMO materials here: https://angular-cz-courseware-examples.herokuapp.com
