@@ -1,9 +1,12 @@
 div.tests(ng-if="tests.results", ng-class="{'passed' : tests.isPassed(), 'failed' : !tests.isPassed()}")
   span.pull-right
     |  {{tests.results.passed}} / {{tests.results.total}} passed
-
+    span.skipped(ng-if='tests.results.skipped').
+      &nbsp;({{tests.results.skipped}} skipped)
   ul
-    li(ng-repeat="test in tests.results.tests", ng-class="test.type|lowercase")
+    li(ng-repeat="test in tests.results.tests", ng-class="test.status|lowercase")
       span.icon
       |  {{test.name}}
-
+      div.log(ng-if="test.log.length")
+        span.log-line(ng-repeat="line in test.log").
+          {{line}}

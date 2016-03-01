@@ -9,6 +9,105 @@ describe('testResultsParser service', function() {
     expect(this.testResultsParser).toBeDefined();
   });
 
+  describe('method getFlattened', function() {
+    it('returns array', function() {
+      var result = this.testResultsParser.getFlattened();
+      expect(Array.isArray(result)).toBeTruthy();
+    });
+
+    it('returns object', function() {
+      var rawResult = {
+        "first": {
+          "log": [],
+          "time": 12,
+          "status": "PASSED"
+        }
+      };
+
+      var result = this.testResultsParser.getFlattened(rawResult);
+      expect(typeof result[0]).toBe("object");
+      expect(result[0].name).toBe("first");
+      expect(result[0].log).toEqual([]);
+      expect(result[0].time).toEqual(12);
+      expect(result[0].status).toEqual("PASSED");
+    });
+
+    it('returns multiple lines', function() {
+      var rawResult = {
+        "first": {status: "PASSED"},
+        "second": {status: "FAILED"}
+      };
+
+      var result = this.testResultsParser.getFlattened(rawResult);
+      expect(result[0].name).toBe("first");
+      expect(result[1].name).toBe("second");
+    });
+
+    it('returns objects with status', function() {
+      var rawResult = {
+        "first": {status: "PASSED"},
+        "second": {status: "FAILED"},
+        "pending": {status: "SKIPPED"}
+
+      };
+
+      var result = this.testResultsParser.getFlattened(rawResult);
+      expect(result[0].status).toBe("PASSED");
+      expect(result[1].status).toBe("FAILED");
+      expect(result[2].status).toBe("SKIPPED");
+    });
+
+    it('flattens sentence', function() {
+      var error = {
+        "first": {
+          second: {status: "FAILED"}
+        }
+      };
+
+      var result = this.testResultsParser.getFlattened(error);
+      expect(result[0].name).toBe("first second");
+    });
+
+    it('flattens multi level sentence', function() {
+      var error = {
+        "first": {
+          second: {
+            third: {
+              fourth: {
+                fifth: {status: "FAILED"}
+              }
+            }
+          }
+        }
+      };
+
+      var result = this.testResultsParser.getFlattened(error);
+      expect(result[0].name).toBe("first second third fourth fifth");
+    });
+
+    it('flattens multiple different level sentences', function() {
+      var error = {
+        "first": {
+          second: {
+            third: {
+              fourth: {
+                fifth: {status: "FAILED"},
+                sixth: {status: "PASSED"}
+              },
+              seventh: {status: "PASSED"}
+
+            }
+          }
+        }
+      };
+
+      var result = this.testResultsParser.getFlattened(error);
+      expect(result[0].name).toBe("first second third fourth fifth");
+      expect(result[1].name).toBe("first second third fourth sixth");
+      expect(result[2].name).toBe("first second third seventh");
+    });
+  });
+
   describe('method getResultsFor', function() {
     it('returns lines for given todo number', function() {
       var testResults = [
@@ -51,108 +150,6 @@ describe('testResultsParser service', function() {
       expect(results.tests[1].name).toMatch('third');
     });
 
-
-  });
-
-  describe('method getFlattened', function() {
-    it('returns array', function() {
-      var result = this.testResultsParser.getFlattened();
-      expect(Array.isArray(result)).toBeTruthy();
-    });
-
-    it('returns objects', function() {
-      var error = {
-        "first": "PASSED"
-      };
-
-      var result = this.testResultsParser.getFlattened(error);
-      expect(typeof result[0]).toBe("object");
-      expect(result[0].name).toBe("first");
-    });
-
-    it('returns multiple lines', function() {
-      var error = {
-        "first": "PASSED",
-        "second": "PASSED"
-      };
-
-      var result = this.testResultsParser.getFlattened(error);
-      expect(result[0].name).toBe("first");
-      expect(result[1].name).toBe("second");
-    });
-
-    it('returns objects with type', function() {
-      var error = {
-        "first": "PASSED",
-        "second": "FAILED",
-        "pending": "PENDING"
-
-      };
-
-      var result = this.testResultsParser.getFlattened(error);
-      expect(result[0].type).toBe("PASSED");
-      expect(result[1].type).toBe("FAILED");
-      expect(result[2].type).toBe("PENDING");
-    });
-
-    it('returns nonpassed objects', function() {
-      var error = {
-        "first": "FAILED"
-      };
-
-      var result = this.testResultsParser.getFlattened(error);
-      expect(result[0].pass).toBeFalsy();
-    });
-
-    it('flattens sentence', function() {
-      var error = {
-        "first": {
-          second: "FAILED"
-        }
-      };
-
-      var result = this.testResultsParser.getFlattened(error);
-      expect(result[0].name).toBe("first second");
-    });
-
-    it('flattens multi level sentence', function() {
-      var error = {
-        "first": {
-          second: {
-            third: {
-              fourth: {
-                fifth: "FAILED"
-              }
-            }
-          }
-        }
-      };
-
-      var result = this.testResultsParser.getFlattened(error);
-      expect(result[0].name).toBe("first second third fourth fifth");
-    });
-
-    it('flattens multiple different level sentences', function() {
-      var error = {
-        "first": {
-          second: {
-            third: {
-              fourth: {
-                fifth: "FAILED",
-                sixth: "PASSED"
-              },
-              seventh: "PASSED"
-
-            }
-          }
-        }
-      };
-
-      var result = this.testResultsParser.getFlattened(error);
-      expect(result[0].name).toBe("first second third fourth fifth");
-      expect(result[1].name).toBe("first second third fourth sixth");
-      expect(result[2].name).toBe("first second third seventh");
-    });
   });
 
   describe('method getAllResults', function() {

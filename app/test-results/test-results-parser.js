@@ -27,7 +27,9 @@
      *   tests: [
      *     {
      *       name: 'Test 1 (TODO 1.1)',
-     *       type: 'PASSED'
+     *       "log": [],
+     *       "time": 14,
+     *       status: 'PASSED'
      *     },
      *     ...
      *   ]
@@ -70,7 +72,9 @@
      *   tests: [
      *     {
      *       name: 'Test 1 (TODO 1.1)',
-     *       type: 'PASSED'
+     *       "log": [],
+     *       "time": 14,
+     *       status: 'PASSED'
      *     },
      *     ...
      *   ]
@@ -79,14 +83,30 @@
     this.getResults_ = function(tests) {
       var result = {};
       result.total = tests.length;
-      result.passed = tests.filter(function(item) {
-        return item.type === "PASSED";
-      }).length;
+      result.passed = tests.reduce(countByFilterReducer(filterPassed), 0);
+      result.skipped = tests.reduce(countByFilterReducer(filterSkipped), 0);
 
       result.tests = tests;
 
       return result;
     };
+
+    function filterPassed(item) {
+      return item.status === 'PASSED';
+    }
+
+    function filterSkipped(item) {
+      return item.status === 'SKIPPED';
+    }
+
+    function countByFilterReducer(filter) {
+      return function(count, item) {
+        if (filter(item)) {
+          return count + 1;
+        }
+        return count;
+      }
+    }
 
     /**
      * Filter lines which contains given todo in form of (TODO <todo>)
@@ -122,9 +142,11 @@
      */
     this.getFlattened = function(testResults) {
 
-      function Item(name, type) {
+      function Result(name, data) {
         this.name = name;
-        this.type = type;
+        this.status = data.status;
+        this.log = data.log;
+        this.time = data.time;
       }
 
       // TODO - refactor, it is midnight coding - functional - but uggly (but you have tests)
@@ -135,10 +157,10 @@
           var value = data[key];
           var name = prefix + key;
 
-          if (typeof value === "object") {
+          if (!value.status) {
             parseData(value, name)
           } else {
-            result.push(new Item(name, data[key]));
+            result.push(new Result(name, data[key]));
           }
         }
       }
@@ -154,4 +176,4 @@
 
 function regexpEscape(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
+}
