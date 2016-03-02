@@ -27,6 +27,10 @@
   &.skipped {
     .bs-callout(@brand-warning);
   }
+  &.error {
+    .bs-callout(@brand-danger);
+    color: @brand-danger;
+  }
 
   .passed, &.passed {
     color: @brand-success;

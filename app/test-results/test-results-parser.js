@@ -40,7 +40,7 @@
       var tests = testResults.filter(function(item) {
         return filter(item.name)
       });
-      return this.getResults_(tests);
+      return this.getResults_(tests, testResults.browserErrors);
     };
 
     /**
@@ -55,7 +55,7 @@
         return item.name.indexOf(todoName) > -1
       });
 
-      return this.getResults_(tests);
+      return this.getResults_(tests, testResults.browserErrors);
     };
 
     /**
@@ -80,8 +80,13 @@
      *   ]
      * }
      */
-    this.getResults_ = function(tests) {
+    this.getResults_ = function(tests, browserErrors) {
       var result = {};
+
+      if (browserErrors) {
+        result.browserErrors = browserErrors
+      }
+
       result.total = tests.length;
       result.passed = tests.reduce(countByFilterReducer(filterPassed), 0);
       result.skipped = tests.reduce(countByFilterReducer(filterSkipped), 0);
@@ -141,31 +146,11 @@
      * @returns {Array}
      */
     this.getFlattened = function(testResults) {
-
-      function Result(name, data) {
-        this.name = name;
-        this.status = data.status;
-        this.log = data.log;
-        this.time = data.time;
-      }
-
-      // TODO - refactor, it is midnight coding - functional - but uggly (but you have tests)
-      function parseData(data, prefix) {
-        prefix = (prefix) ? prefix + ' ' : '';
-
-        for (var key in data) {
-          var value = data[key];
-          var name = prefix + key;
-
-          if (!value.status) {
-            parseData(value, name)
-          } else {
-            result.push(new Result(name, data[key]));
-          }
-        }
-      }
-
       var result = [];
+      if (testResults['__BROWSER_ERRORS__']) {
+        result.browserErrors = testResults['__BROWSER_ERRORS__'];
+        delete testResults['__BROWSER_ERRORS__'];
+      }
 
       parseData(testResults, '');
 
@@ -173,6 +158,30 @@
     }
   }
 })();
+
+function Result(name, data) {
+  this.name = name;
+  this.status = data.status;
+  this.log = data.log;
+  this.time = data.time;
+}
+
+// TODO - refactor, it is midnight coding - functional - but uggly (but you have tests)
+function parseData(data, prefix) {
+  prefix = (prefix) ? prefix + ' ' : '';
+
+  for (var key in data) {
+
+    var value = data[key];
+    var name = prefix + key;
+
+    if (!value.status) {
+      parseData(value, name)
+    } else {
+      result.push(new Result(name, data[key]));
+    }
+  }
+}
 
 function regexpEscape(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");

@@ -97,7 +97,9 @@
        * @returns {boolean}
        */
       this.isPassed = function() {
-        return this.results && this.results.passed === this.results.total;
+        return this.results &&
+          this.results.passed !== 0 &&
+          this.results.passed === this.results.total;
       };
 
       // reaction on test results actualization
