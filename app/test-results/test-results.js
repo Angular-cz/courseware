@@ -136,7 +136,7 @@
     this.actualizeData_ = function(message) {
       var loader = this.getResultsLoader(message.exercise);
       console.log('Actualization of todo:' + message.exercise);
-      loader.setResults(message.data);
+      loader.setResults(message.data || {});
 
 
       $rootScope.$broadcast('todo:actualized');

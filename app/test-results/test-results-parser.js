@@ -146,13 +146,14 @@
      * @returns {Array}
      */
     this.getFlattened = function(testResults) {
+      testResults = testResults || {};
       var result = [];
       if (testResults['__BROWSER_ERRORS__']) {
         result.browserErrors = testResults['__BROWSER_ERRORS__'];
         delete testResults['__BROWSER_ERRORS__'];
       }
 
-      parseData(testResults, '');
+      parseData(result, testResults, '');
 
       return result;
     }
@@ -167,7 +168,7 @@ function Result(name, data) {
 }
 
 // TODO - refactor, it is midnight coding - functional - but uggly (but you have tests)
-function parseData(data, prefix) {
+function parseData(result, data, prefix) {
   prefix = (prefix) ? prefix + ' ' : '';
 
   for (var key in data) {
@@ -176,7 +177,7 @@ function parseData(data, prefix) {
     var name = prefix + key;
 
     if (!value.status) {
-      parseData(value, name)
+      parseData(result, value, name)
     } else {
       result.push(new Result(name, data[key]));
     }
