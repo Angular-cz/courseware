@@ -8,10 +8,12 @@ div(ng-if="tests.results")
       |  {{tests.results.passed}} / {{tests.results.total}} passed
       span.skipped(ng-if='tests.results.skipped').
         &nbsp;({{tests.results.skipped}} skipped)
-    ul
+    ul(ng-if="tests.results.tests.length")
       li(ng-repeat="test in tests.results.tests", ng-class="test.status|lowercase")
         span.icon
         |  {{test.name}}
         div.log(ng-if="test.log.length")
-          span.log-line(ng-repeat="line in test.log").
+          span.log-line(ng-repeat="line in test.log track by $index").
             {{line}}<br />
+    div(ng-if="!tests.results.tests.length").
+      No tests for TODO {{tests.todo}}
