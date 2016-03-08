@@ -4,6 +4,7 @@ CourseWare is a tool for generating interactive materials for your lectures.
 
 You can see DEMO materials here: https://angular-cz-courseware-examples.herokuapp.com
 
+[![Build Status](https://travis-ci.org/Angular-cz/courseware.svg?branch=master)](https://travis-ci.org/Angular-cz/courseware)
 [![Dependency Status](https://david-dm.org/Angular-cz/courseware.png)](https://david-dm.org/Angular-cz/courseware) 
 [![devDependency Status](https://david-dm.org/Angular-cz/courseware/dev-status.png)](https://david-dm.org/Angular-cz/courseware#info=devDependencies)
 
