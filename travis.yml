@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - "4"
+env:
+  - PROTR_BROWSER=firefox
+before_install:
+  - cat /etc/hosts # optionally check the content *before*
+  - sudo hostname "$(hostname | cut -c1-63)"
+  - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
+  - cat /etc/hosts # optionally check the content *after*
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+
+script:
+  - "cd test/working-dir; courseware build;"
+  - "cd test/working-dir; http-server;"
+  - "protractor test/protractor.conf.js;"
+

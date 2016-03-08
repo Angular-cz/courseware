@@ -45,6 +45,7 @@
   "main": "main.js",
   "devDependencies": {
     "angular-mocks": "^1.4.8",
+    "http-server": "^0.8.5",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.15",
     "karma-jasmine": "^0.3.6",

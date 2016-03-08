@@ -4,7 +4,7 @@ exports.config = {
     '*.spec.js'
   ],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': process.env.PROTR_BROWSER || 'chrome'
   },
   baseUrl: 'http://localhost:8080/',
   framework: 'jasmine2',
