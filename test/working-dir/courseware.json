@@ -1,0 +1,10 @@
+{
+  "introFile": "courseware-intro.jade",
+  "header": "CourseWare test title",
+  "todoFilePath": "complete/todo.jade",
+  "todos": [
+    "01-first",
+    "02-second",
+    "03-third"
+  ]
+}

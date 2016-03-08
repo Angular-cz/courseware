@@ -4,7 +4,7 @@ var fs = require('fs');
 var Promise = require('promise');
 var findRoot = require('find-root');
 
-var baseDir = findRoot(process.cwd());
+var baseDir = process.cwd();
 var config = loadConfig();
 
 /**
@@ -15,6 +15,9 @@ function loadConfig() {
   // TODO default values
 
   var configName = path.join(baseDir, "courseware.json");
+
+  // TODO config is loaded twice
+  //console.log('Loading config:' + configName);
 
   return JSON.parse(fs.readFileSync(configName).toString());
 }
