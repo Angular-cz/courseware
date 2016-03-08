@@ -1,85 +1,6 @@
-var rootUrl = 'http://localhost:8080/';
 
-function CourseWarePO() {
-  this.title = element(by.css('a.navbar-brand'));
-  this.introTitle = element(by.css('div.main > h2'));
-  this.menuItems = element.all(by.repeater('todo in vm.todos').column('todo'));
-
-  this.go = function() {
-    browser.get(rootUrl);
-  };
-
-  this.getMainTitle = function() {
-    return this.title.getText();
-  };
-
-  this.getIntroTitle = function() {
-    return this.introTitle.getText();
-  };
-
-  this.getMenuItems = function() {
-    return this.menuItems.map(function(item) {
-      return new MenuItem(item);
-    });
-  }
-}
-
-function MenuItem(item) {
-  this.item = item;
-  this.getTitle = function() {
-    return this.item.getText();
-  };
-
-  this.go = function() {
-    this.item.click();
-    return new ExercisePO();
-  };
-}
-
-function ExercisePO(exerciseName) {
-
-  this.exerciseName = exerciseName;
-  this.title = element(by.binding('todo.current'));
-  this.pagination = element.all(by.css('pagination')).last();
-  this.content = element(by.css('ng-include'));
-
-  this.go = function() {
-    browser.get(rootUrl + '#/todo/' + this.exerciseName);
-  };
-  this.getTitle = function() {
-    return this.title.getText();
-  };
-
-  this.getPagination = function() {
-    return new PaginationComponent(this.pagination);
-  }
-}
-
-function PaginationComponent(element) {
-  this.element = element;
-  this.nextLink = this.element.element(by.binding('pagination.next'));
-  this.prevLink = this.element.element(by.binding('pagination.prev'));
-
-  this.getNextTitle = function() {
-    return this.nextLink.getAttribute('text');
-  };
-
-  this.goNext = function() {
-    this.nextLink.click();
-
-    return new ExercisePO();
-  };
-
-  this.getPrevTitle = function() {
-    return this.prevLink.getAttribute('text');
-  };
-
-  this.goPrev = function() {
-    this.prevLink.click();
-
-    return new ExercisePO();
-  };
-}
+var CourseWarePO = require('./po/Courseware.po');
+var ExercisePO = require('./po/Exercise.po');
 
 describe('Courseware', function() {
 
@@ -90,14 +11,13 @@ describe('Courseware', function() {
       this.po.go();
     });
 
-    fit('should have a title', function() {
+    it('should have a title', function() {
       expect(this.po.getMainTitle()).toBe('CourseWare test title');
     });
 
     it('should have a intro rendered', function() {
       expect(this.po.getIntroTitle()).toBe('Intro title');
     });
-
   });
 
   describe('menu', function() {
@@ -108,9 +28,8 @@ describe('Courseware', function() {
       this.po.go();
 
       this.po.getMenuItems()
-        .then(function(menuItems) {
-          exercises = menuItems;
-
+        .then(function(items) {
+          exercises = items;
           done();
         });
     });
