@@ -14,44 +14,55 @@ describe('Courseware component', function() {
     });
 
     it('contains test name', function() {
-
-      var result = {
+      this.todo01.writeResult({
         "test(TODO 1)": {
           "status": "FAILED"
         }
-      };
-
-      this.todo01.writeResult(result);
+      });
 
       var firstRow = this.todo01.element.all(by.css('li')).first();
       expect(firstRow.getText()).toMatch('TODO 1');
 
     });
 
-    it('contains failed test', function() {
+    it('informs about missing test', function() {
+      this.todo01.writeResult({});
 
-      var result = {
+      var content = this.todo01.element.getText();
+      expect(content).toMatch('No tests for TODO 1');
+      expect(this.todo01.getTestResults()).toMatch('0 / 0');
+    });
+
+    it('supports failed test', function() {
+      this.todo01.writeResult({
         "test(TODO 1)": {
           "status": "FAILED"
         }
-      };
-
-      this.todo01.writeResult(result);
+      });
 
       expect(this.todo01.getTestResults()).toMatch('0 / 1');
     });
 
-    it('contains passed test', function() {
+    it('supports passed test', function() {
 
-      var result = {
+      this.todo01.writeResult({
         "test(TODO 1)": {
           "status": "PASSED"
         }
-      };
-
-      this.todo01.writeResult(result);
+      });
 
       expect(this.todo01.getTestResults()).toMatch('1 / 1');
+    });
+
+    it('supports pending test', function() {
+
+      this.todo01.writeResult({
+        "test(TODO 1)": {
+          "status": "SKIPPED"
+        }
+      });
+
+      expect(this.todo01.getTestResults()).toMatch('skipped');
     });
   });
 
