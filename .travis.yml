@@ -15,7 +15,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - "cd test/working-dir; ../../node_modules/.bin/courseware build;cd ../.."
-  - "cd test/working-dir; ../../node_modules/.bin/http-server;cd ../.."
-  - "node_modules/.bin/protractor test/protractor.conf.js;"
-
+  - npm run e2e-build
+  - npm run e2e-start-server&
+  - sleep 3
+  - npm run e2e-protractor
