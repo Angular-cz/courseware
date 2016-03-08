@@ -19,3 +19,6 @@ script:
   - npm run e2e-start-server&
   - sleep 3
   - npm run e2e-protractor
+
+notifications:
+  slack: angular-cz:92HfA5hujXzEh3cJ8lJYJFDV
