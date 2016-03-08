@@ -90,7 +90,7 @@ describe('Courseware', function() {
       this.po.go();
     });
 
-    it('should have a title', function() {
+    fit('should have a title', function() {
       expect(this.po.getMainTitle()).toBe('CourseWare test title');
     });
 

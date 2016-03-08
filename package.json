@@ -56,7 +56,7 @@
   "scripts": {
     "postinstall": "bower install",
 
-    "e2e-build" : "cd test/working-dir; courseware build ; cd ../..",
+    "e2e-build" : "cd test/working-dir; ../../bin/courseware build ; cd ../..",
     "e2e-start-server" : "cd test/working-dir; http-server ; cd ../..",
     "e2e-protractor": "webdriver-manager update && protractor test/protractor.conf.js"
   }
