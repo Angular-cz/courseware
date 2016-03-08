@@ -17,7 +17,6 @@
     "bootstrap": "^3.3.6",
     "bower": "^1.7.2",
     "connect": "^3.4.0",
-    "find-root": "^0.1.1",
     "format-json": "^1.0.3",
     "gulp": "^3.9.0",
     "gulp-batch": "^1.0.5",

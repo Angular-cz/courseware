@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var path = require('path');
 var fs = require('fs');
 var Promise = require('promise');
-var findRoot = require('find-root');
 
 var baseDir = process.cwd();
 var config = loadConfig();
