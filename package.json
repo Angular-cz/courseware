@@ -44,19 +44,20 @@
   "main": "main.js",
   "devDependencies": {
     "angular-mocks": "^1.4.8",
-    "http-server": "^0.8.5",
+    "connect": "^3.4.1",
+    "find-root": "^1.0.0",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.15",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^1.0.0",
     "phantomjs-prebuilt": "^2.1.4",
-    "protractor": "^3.1.1"
+    "protractor": "^3.1.1",
+    "serve-static": "^1.10.2"
   },
   "scripts": {
     "postinstall": "bower install",
-
-    "e2e-build" : "cd test/working-dir; ../../bin/courseware build ; cd ../..",
-    "e2e-start-server" : "cd test/working-dir; http-server ; cd ../..",
+    "e2e-build": "cd test/working-dir; ../../bin/courseware build ; cd ../..",
+    "e2e-start-server": "cd test/working-dir; node server.js ; cd ../..",
     "e2e-protractor": "webdriver-manager update && protractor test/protractor.conf.js"
   }
 }

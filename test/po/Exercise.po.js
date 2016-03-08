@@ -15,10 +15,30 @@ function ExercisePO(exerciseName) {
 
   this.getPagination = function() {
     return new PaginationComponent(this.pagination);
+  };
+
+  this.getTests = function(todo) {
+    var element = this.content.element(by.css('tests[todo="' + todo + '"]'));
+    return new Tests(element, this.exerciseName);
   }
 }
 
 module.exports = ExercisePO;
+
+function Tests(element, exerciseName) {
+  this.element = element;
+  this.exercise = exerciseName;
+
+  this.writeResult = function(result) {
+    var fs = require('fs');
+    var path = require('path');
+    fs.writeFileSync(path.join(process.cwd(), 'test/working-dir/test-results/' + this.exercise+ '.json'), JSON.stringify(result));
+  };
+
+  this.getTestResults = function() {
+    return this.element.element(by.binding('tests.results.passed')).getText();
+  }
+}
 
 function PaginationComponent(element) {
   this.element = element;

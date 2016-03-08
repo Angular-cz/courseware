@@ -3,8 +3,19 @@ var path = require('path');
 var fs = require('fs');
 var Promise = require('promise');
 
-var baseDir = process.cwd();
-var config = loadConfig();
+var baseDir = findBaseDir();
+var config = loadConfig(baseDir);
+
+function findBaseDir(){
+  var configName = path.join(process.cwd(), "courseware.json");
+
+  if (fs.existsSync(configName)) {
+    return process.cwd();
+  }
+
+  var findRoot = require('find-root');
+  return findRoot(process.cwd());
+}
 
 /**
  * Loads config courseware.json synchronously
@@ -16,7 +27,7 @@ function loadConfig() {
   var configName = path.join(baseDir, "courseware.json");
 
   // TODO config is loaded twice
-  //console.log('Loading config:' + configName);
+  console.log('Loading config:' + configName);
 
   return JSON.parse(fs.readFileSync(configName).toString());
 }
@@ -111,7 +122,7 @@ function loadTestResults(todoResultPath) {
       data: JSON.parse(data.toString())
     };
   } catch (error) {
-    console.warn('Courseware: Parsing test results', todoResultPath, 'failed with error',  error.message);
+    console.warn('Courseware: Parsing test results', todoResultPath, 'failed with error', error.message);
     return false;
   }
 }
@@ -240,7 +251,6 @@ function determineExerciseName(karmaConfig) {
   if (karmaConfig.configFile) {
     var configDir = path.dirname(karmaConfig.configFile);
     var exerciseName = path.basename(configDir);
-
   }
 
   if (config.todos.indexOf(exerciseName) == -1) {
