@@ -1,6 +1,8 @@
 
 var CourseWarePO = require('./po/Courseware.po');
 var ExercisePO = require('./po/Exercise.po');
+var HintPO = require('./po/Hint.po');
+var SolutionPO = require('./po/Solution.po');
 
 describe('Courseware', function() {
 
@@ -73,7 +75,7 @@ describe('Courseware', function() {
       });
 
       it('should be able to go to next item', function() {
-        var exercisePO = this.pagination.goNext();
+        this.pagination.goNext();
         expect(browser.getLocationAbsUrl()).toMatch('03-third');
       });
 
@@ -82,7 +84,7 @@ describe('Courseware', function() {
       });
 
       it('should be able to go to previous item', function() {
-        var exercisePO = this.pagination.goPrev();
+        this.pagination.goPrev();
         expect(browser.getLocationAbsUrl()).toMatch('01-first');
       });
     });
@@ -117,7 +119,43 @@ describe('Courseware', function() {
     it('should have content', function() {
       expect(this.exercisePO.content.getInnerHtml()).toMatch('content of first exercise');
     });
-
   });
 
+  describe('component', function(){
+    beforeEach(function() {
+      this.exercisePO = new ExercisePO('01-first');
+      this.exercisePO.go();
+    });
+
+    describe('hint', function(){
+      beforeEach(function() {
+        this.hint = new HintPO();
+      });
+
+      it('should be hidden by default', function(){
+        expect(this.hint.isOpened()).toBe(false);
+      });
+
+      it('can be opened', function() {
+        this.hint.open();
+        expect(this.hint.isOpened()).toBe(true);
+      });
+    });
+
+    describe('solution', function(){
+
+      beforeEach(function() {
+        this.solution = new SolutionPO();
+      });
+
+      it('should be hidden by default', function(){
+        expect(this.solution.isOpened()).toBe(false);
+      });
+
+      it('can be opened', function() {
+        this.solution.open();
+        expect(this.solution.isOpened()).toBe(true);
+      });
+    });
+  });
 });
