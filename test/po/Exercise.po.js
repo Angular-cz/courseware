@@ -28,16 +28,13 @@ module.exports = ExercisePO;
 function Tests(element, exerciseName) {
   this.element = element;
   this.exercise = exerciseName;
+  this.results = this.element.element(by.binding('tests.results.passed'));
 
   this.writeResult = function(result) {
     var fs = require('fs');
     var path = require('path');
     fs.writeFileSync(path.join(process.cwd(), 'test/working-dir/test-results/' + this.exercise+ '.json'), JSON.stringify(result));
   };
-
-  this.getTestResults = function() {
-    return this.element.element(by.binding('tests.results.passed')).getText();
-  }
 }
 
 function PaginationComponent(element) {

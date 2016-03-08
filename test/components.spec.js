@@ -1,6 +1,11 @@
 var ExercisePO = require('./po/Exercise.po');
 var HintPO = require('./po/Hint.po');
 var SolutionPO = require('./po/Solution.po');
+var EC = protractor.ExpectedConditions;
+
+function waitForContent(element, text) {
+  browser.wait(EC.textToBePresentInElement(element, text), 5000);
+}
 
 describe('Courseware component', function() {
   beforeEach(function() {
@@ -15,22 +20,19 @@ describe('Courseware component', function() {
 
     it('contains test name', function() {
       this.todo01.writeResult({
-        "test(TODO 1)": {
+        "test name (TODO 1)": {
           "status": "FAILED"
         }
       });
 
-      var firstRow = this.todo01.element.all(by.css('li')).first();
-      expect(firstRow.getText()).toMatch('TODO 1');
-
+      waitForContent(this.todo01.element, 'test name (TODO 1)');
     });
 
     it('informs about missing test', function() {
       this.todo01.writeResult({});
 
-      var content = this.todo01.element.getText();
-      expect(content).toMatch('No tests for TODO 1');
-      expect(this.todo01.getTestResults()).toMatch('0 / 0');
+      waitForContent(this.todo01.element, 'No tests for TODO 1');
+      waitForContent(this.todo01.results, '0 / 0');
     });
 
     it('supports failed test', function() {
@@ -40,7 +42,7 @@ describe('Courseware component', function() {
         }
       });
 
-      expect(this.todo01.getTestResults()).toMatch('0 / 1');
+      waitForContent(this.todo01.results, '0 / 1');
     });
 
     it('supports passed test', function() {
@@ -51,7 +53,7 @@ describe('Courseware component', function() {
         }
       });
 
-      expect(this.todo01.getTestResults()).toMatch('1 / 1');
+      waitForContent(this.todo01.results, '1 / 1');
     });
 
     it('supports pending test', function() {
@@ -62,7 +64,7 @@ describe('Courseware component', function() {
         }
       });
 
-      expect(this.todo01.getTestResults()).toMatch('skipped');
+      waitForContent(this.todo01.results, 'skipped');
     });
   });
 
