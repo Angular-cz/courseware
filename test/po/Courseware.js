@@ -1,5 +1,5 @@
-var ExercisePO = require('./Exercise.po');
-var PaginationComponent = require('./Pagination.po');
+var ExercisePO = require('./Exercise');
+var PaginationComponent = require('./Pagination');
 
 module.exports = function CourseWarePO() {
   this.title = element(by.css('a.navbar-brand'));

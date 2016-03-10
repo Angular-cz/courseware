@@ -1,6 +1,6 @@
-var ExercisePO = require('./po/Exercise.po');
-var HintPO = require('./po/Hint.po');
-var SolutionPO = require('./po/Solution.po');
+var ExercisePO = require('./po/Exercise');
+var HintPO = require('./po/Hint');
+var SolutionPO = require('./po/Solution');
 var EC = protractor.ExpectedConditions;
 
 function waitForContent(element, text) {

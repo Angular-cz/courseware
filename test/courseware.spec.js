@@ -1,5 +1,5 @@
-var CourseWarePO = require('./po/Courseware.po');
-var ExercisePO = require('./po/Exercise.po');
+var CourseWarePO = require('./po/Courseware');
+var ExercisePO = require('./po/Exercise');
 
 describe('Courseware', function() {
 

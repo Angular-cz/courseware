@@ -1,5 +1,5 @@
-var ExercisePO = require('./po/Exercise.po');
-var CourseWarePO = require('./po/Courseware.po');
+var ExercisePO = require('./po/Exercise');
+var CourseWarePO = require('./po/Courseware');
 
 describe('pagination', function() {
 

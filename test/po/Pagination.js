@@ -1,4 +1,4 @@
-var ExercisePO = require('./Exercise.po');
+var ExercisePO = require('./Exercise');
 
 module.exports = function PaginationComponent(element) {
   this.element = element;

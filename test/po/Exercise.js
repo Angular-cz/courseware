@@ -1,6 +1,6 @@
 
 function ExercisePO(exerciseName) {
-  var PaginationComponent = require('./Pagination.po');
+  var PaginationComponent = require('./Pagination');
 
   this.exerciseName = exerciseName;
   this.title = element(by.binding('todo.current'));
