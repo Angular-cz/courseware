@@ -1,9 +1,11 @@
 var ExercisePO = require('./Exercise.po');
+var PaginationComponent = require('./Pagination.po');
 
 module.exports = function CourseWarePO() {
   this.title = element(by.css('a.navbar-brand'));
   this.introTitle = element(by.css('div.main > h2'));
   this.menuItems = element.all(by.repeater('todo in vm.todos').column('todo'));
+  this.pagination = element.all(by.css('pagination')).last();
 
   this.go = function() {
     browser.get('/');
@@ -26,7 +28,11 @@ module.exports = function CourseWarePO() {
       .then(function(items) {
         return items.map(createMenuItem);
       });
-  }
+  };
+
+  this.getPagination = function() {
+    return new PaginationComponent(this.pagination);
+  };
 };
 
 function MenuItem(item) {

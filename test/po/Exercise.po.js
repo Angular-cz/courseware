@@ -1,5 +1,6 @@
 
 function ExercisePO(exerciseName) {
+  var PaginationComponent = require('./Pagination.po');
 
   this.exerciseName = exerciseName;
   this.title = element(by.binding('todo.current'));
@@ -34,31 +35,5 @@ function Tests(element, exerciseName) {
     var fs = require('fs');
     var path = require('path');
     fs.writeFileSync(path.join(process.cwd(), 'test/working-dir/test-results/' + this.exercise+ '.json'), JSON.stringify(result));
-  };
-}
-
-function PaginationComponent(element) {
-  this.element = element;
-  this.nextLink = this.element.element(by.binding('pagination.next'));
-  this.prevLink = this.element.element(by.binding('pagination.prev'));
-
-  this.getNextTitle = function() {
-    return this.nextLink.getAttribute('text');
-  };
-
-  this.goNext = function() {
-    this.nextLink.click();
-
-    return new ExercisePO();
-  };
-
-  this.getPrevTitle = function() {
-    return this.prevLink.getAttribute('text');
-  };
-
-  this.goPrev = function() {
-    this.prevLink.click();
-
-    return new ExercisePO();
   };
 }

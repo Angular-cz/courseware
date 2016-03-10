@@ -1,11 +1,34 @@
 var ExercisePO = require('./po/Exercise.po');
+var CourseWarePO = require('./po/Courseware.po');
 
 describe('pagination', function() {
+
+  describe('on intro', function() {
+    beforeEach(function() {
+      this.intro = new CourseWarePO();
+      this.intro.go();
+      this.pagination = this.intro.getPagination();
+    });
+
+    it('should not have previous link', function() {
+      expect(this.pagination.prevLink.isPresent()).toBe(false);
+    });
+
+    it('should have link to the first exercise', function() {
+      expect(this.pagination.getNextTitle()).toMatch('01-first');
+    });
+
+  });
   describe('on first page', function() {
     beforeEach(function() {
       this.exercisePO = new ExercisePO('01-first');
       this.exercisePO.go();
       this.pagination = this.exercisePO.getPagination();
+    });
+
+    it('should have link to introduction', function() {
+      this.pagination.goPrev();
+      expect(browser.getLocationAbsUrl()).toBe('/');
     });
 
     it('should have link to next exercise', function() {
