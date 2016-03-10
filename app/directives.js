@@ -18,6 +18,17 @@
 
         this.prev = todoLoader.getPrev(this.current);
         this.next = todoLoader.getNext(this.current);
+
+        // first page on intro
+        if(!this.next && !this.prev) {
+          this.next = todoLoader.getFirst();
+        }
+
+        // Intro would not meet the list of todos and will redirect to home
+        if(!this.prev && this.current) {
+          this.prev = 'Intro';
+        }
+
       },
       controllerAs: "pagination"
     }

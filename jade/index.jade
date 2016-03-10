@@ -67,7 +67,11 @@ body#top
 
   //- create template for homepage info template
   script(type='text/ng-template' id='intro')
+    pagination.visible-xs
+
     != render(config.introFilePath)
+
+    pagination
 
   // angular templates for controllers and directives
   script(type='text/ng-template' id='todos')

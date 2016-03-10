@@ -26,6 +26,10 @@
       }
       var index = this.todos.indexOf(todo);
       return this.todos[index - 1];
+    };
+
+    this.getFirst = function() {
+      return this.todos[0];
     }
   }
 })();
