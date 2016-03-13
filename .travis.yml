@@ -14,7 +14,7 @@ before_script:
 script:
   - npm run test-ci
   - npm run e2e-build
-  - npm run e2e-start-server&
+  - npm run e2e-start-server > /dev/null&
   - sleep 3
   - npm run e2e-protractor
 
