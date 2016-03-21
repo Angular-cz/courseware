@@ -11,9 +11,6 @@
     "url": "https://github.com/Angular-cz/courseware/issues"
   },
   "dependencies": {
-    "angular": "^1.4.8",
-    "angular-socket-io": "^0.7.0",
-    "angular-ui-router": "^0.2.15",
     "bootstrap": "^3.3.6",
     "bower": "^1.7.2",
     "connect": "^3.4.0",
@@ -44,7 +41,7 @@
   },
   "main": "main.js",
   "devDependencies": {
-    "angular-mocks": "^1.4.8",
+    "angular-mocks": "~1.5",
     "connect": "^3.4.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.15",
