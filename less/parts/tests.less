@@ -69,6 +69,30 @@
     }
   }
 
+  & .no-expectation {
+    color: @brand-warning;
+    > .icon, h4 .icon {
+      .glyphicon;
+      .glyphicon-exclamation-sign;
+      top: 3px;
+    }
+    > .icon {
+      top: 2px;
+    }
+  }
+
+  & .slow-test-warning {
+    display:inline-block;
+    padding-left:10px;
+    width: 28px;
+
+    .glyphicon;
+
+    &:before {
+      content: "\e023";
+    }
+  }
+
   ul {
     list-style-type: none;
     padding-left: 15px;

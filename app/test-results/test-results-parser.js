@@ -165,6 +165,7 @@ function Result(name, data) {
   this.status = data.status;
   this.log = data.log;
   this.time = data.time;
+  this.noExpectationsWarning = Boolean(data.noExpectationsWarning);
 }
 
 // TODO - refactor, it is midnight coding - functional - but uggly (but you have tests)

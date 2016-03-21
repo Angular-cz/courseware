@@ -9,9 +9,12 @@ div(ng-if="tests.results")
       span.skipped(ng-if='tests.results.skipped').
         &nbsp;({{tests.results.skipped}} skipped)
     ul(ng-if="tests.results.tests.length")
-      li(ng-repeat="test in tests.results.tests", ng-class="test.status|lowercase")
+      li(ng-repeat="test in tests.results.tests", ng-class="tests.getClassFor(test)")
         span.icon
+        span.no-expectation-warning(ng-if="test.noExpectationsWarning") &nbsp;Test has no expectations!
+        span.slow-test-warning(ng-show="tests.isSlow(test)", title="Test is slow! ({{test.time}} ms)") &nbsp;
         |  {{test.name}}
+
         div.log(ng-if="test.log.length")
           span.log-line(ng-repeat="line in test.log track by $index").
             {{line}}<br />

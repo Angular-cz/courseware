@@ -2,7 +2,54 @@
   angular.module('ngCzCourseWare')
     .directive('tests', testsDirective)
     .directive('testsResults', testsResultsDirective)
-    .directive('testsExists', testsExistsDirective)
+    .directive('testsExists', testsExistsDirective);
+
+  function BaseTestDirectiveController($scope) {
+
+    // reaction on test results actualization
+    $scope.$on('todo:actualized', function() {
+      this.actualizeResults_();
+    }.bind(this));
+
+    this.actualizeResults_();
+  }
+
+  /**
+   * @abstract
+   */
+  BaseTestDirectiveController.prototype.getResults = function() {
+    throw new Error('getResults must be reimplemented in child class!')
+  };
+
+  /**
+   * Load test results of this block
+   */
+  BaseTestDirectiveController.prototype.actualizeResults_ = function() {
+    this.results = this.getResults();
+  };
+
+  /**
+   * Check if all tests passes
+   *
+   * @returns {boolean}
+   */
+  BaseTestDirectiveController.prototype.isPassed = function() {
+    return this.results &&
+      this.results.passed !== 0 &&
+      this.results.passed === this.results.total;
+  };
+
+  BaseTestDirectiveController.prototype.getClassFor = function(test) {
+    if (test.noExpectationsWarning) {
+      return 'no-expectation';
+    }
+
+    return test.status.toLowerCase();
+  };
+
+  BaseTestDirectiveController.prototype.isSlow = function(test) {
+    return test.time > 10;
+  };
 
   /**
    * Directive which shows test results, it takes name of todo which will be searched in results.
@@ -13,6 +60,28 @@
    * @param $stateParams
    */
   function testsDirective() {
+
+    function TestsDirectiveController($scope, testResults, $stateParams, $attrs) {
+      this.testResults = testResults;
+      this.$stateParams = $stateParams;
+      this.$attrs = $attrs;
+
+      BaseTestDirectiveController.call(this, $scope);
+    }
+
+    TestsDirectiveController.prototype = Object.create(BaseTestDirectiveController.prototype);
+    TestsDirectiveController.constructor = TestsDirectiveController;
+
+    TestsDirectiveController.prototype.getResults = function() {
+      var loader = this.testResults.getResultsLoader(this.$stateParams.name);
+
+      if (this.$attrs.hasOwnProperty('withoutTodo')) {
+        return loader.getResultsWithoutTodo()
+      } else {
+        return loader.getResultsFor(this.todo, this.$attrs.hasOwnProperty('exact'));
+      }
+    };
+
     return {
       restrict: 'E',
       templateUrl: "directive-tests",
@@ -20,45 +89,10 @@
       bindToController: {
         todo: '@?'
       },
-      controller: testsDirectiveController,
+      controller: TestsDirectiveController,
       controllerAs: 'tests'
     };
 
-    function testsDirectiveController($scope, testResults, $stateParams, $attrs) {
-      this.getResults = function() {
-        var loader = testResults.getResultsLoader($stateParams.name);
-
-        if ($attrs.hasOwnProperty('withoutTodo')) {
-          return loader.getResultsWithoutTodo()
-        } else {
-          return loader.getResultsFor(this.todo, $attrs.hasOwnProperty('exact'));
-        }
-      };
-
-      /**
-       * Load test results of this block
-       */
-      this.actualizeResults_ = function() {
-        this.results = this.getResults();
-      };
-
-      this.actualizeResults_();
-
-      /**
-       * Check if all tests passes
-       *
-       * @returns {boolean}
-       */
-      this.isPassed = function() {
-        return isResultPassed(this.results);
-      };
-
-      // reaction on test results actualization
-      $scope.$on('todo:actualized', function() {
-        this.actualizeResults_();
-      }.bind(this));
-
-    }
   }
 
   /**
@@ -70,6 +104,24 @@
    * @param $stateParams
    */
   function testsResultsDirective() {
+
+    function TestsResultsDirectiveController($scope, testResults, $stateParams, $attrs) {
+      this.testResults = testResults;
+      this.$stateParams = $stateParams;
+      this.$attrs = $attrs;
+      this.showTests = !$attrs.hasOwnProperty('titleOnly');
+
+      TestsResultsDirectiveController.call(this, $scope);
+    }
+
+    TestsResultsDirectiveController.prototype = Object.create(BaseTestDirectiveController.prototype);
+    TestsResultsDirectiveController.constructor = TestsResultsDirectiveController;
+
+    TestsResultsDirectiveController.prototype.getResults = function() {
+      var loader = this.testResults.getResultsLoader(this.$stateParams.name);
+      this.results = loader.getResultsFor();
+    };
+
     return {
       restrict: 'E',
       templateUrl: "directive-tests-results",
@@ -78,41 +130,6 @@
       controller: testsResultsDirectiveController,
       controllerAs: 'tests'
     };
-
-    function testsResultsDirectiveController($scope, testResults, $stateParams, $attrs) {
-      this.showTests = !$attrs.hasOwnProperty('titleOnly');
-
-      /**
-       * Load test results of this block
-       */
-      this.actualizeResults_ = function() {
-        var loader = testResults.getResultsLoader($stateParams.name);
-        this.results = loader.getResultsFor();
-      };
-
-      this.actualizeResults_();
-
-      /**
-       * Check if all tests passes
-       *
-       * @returns {boolean}
-       */
-      this.isPassed = function() {
-        return isResultPassed(this.results);
-      };
-
-      // reaction on test results actualization
-      $scope.$on('todo:actualized', function() {
-        this.actualizeResults_();
-      }.bind(this));
-
-    }
-  }
-
-  function isResultPassed(results) {
-    return results &&
-      results.passed !== 0 &&
-      results.passed === results.total;
   }
 
   /**
@@ -124,6 +141,23 @@
    * @param $stateParams
    */
   function testsExistsDirective() {
+
+    function TestsExistsDirectiveController($scope, testResults, $stateParams, $attrs) {
+      this.testResults = testResults;
+      this.$stateParams = $stateParams;
+      this.$attrs = $attrs;
+
+      TestsExistsDirectiveController.call(this, $scope);
+    }
+
+    TestsExistsDirectiveController.prototype = Object.create(BaseTestDirectiveController.prototype);
+    TestsExistsDirectiveController.constructor = TestsExistsDirectiveController;
+
+    TestsExistsDirectiveController.prototype.getResults = function() {
+      var loader = this.testResults.getResultsLoader(this.$stateParams.name);
+      this.results = loader.getResultsFor(this.todo, this.$attrs.hasOwnProperty('exact'));
+    };
+
     return {
       restrict: 'E',
       templateUrl: "directive-tests-exists",
@@ -136,32 +170,6 @@
       controllerAs: 'tests'
     };
 
-    function testsExistsDirectiveController($scope, testResults, $stateParams, $attrs) {
-      /**
-       * Load test results of this block
-       */
-      this.actualizeResults_ = function() {
-        var loader = testResults.getResultsLoader($stateParams.name);
-        this.results = loader.getResultsFor(this.todo, $attrs.hasOwnProperty('exact'));
-      };
-
-      this.actualizeResults_();
-
-      /**
-       * Check if all tests passes
-       *
-       * @returns {boolean}
-       */
-      this.exists = function() {
-        return this.results.total > 0;
-      };
-
-      // reaction on test results actualization
-      $scope.$on('todo:actualized', function() {
-        this.actualizeResults_();
-      }.bind(this));
-
-    }
   }
 
 })();
