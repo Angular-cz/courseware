@@ -1,0 +1,22 @@
+{
+  "test passed (TODO 1)": {
+    "status": "PASSED"
+  },
+  "test failed (TODO 2)": {
+    "status": "FAILED",
+    "log": [
+      "log content"
+    ]
+  },
+  "test skipped (TODO 3)": {
+    "status": "SKIPPED"
+  },
+  "test slow (TODO 4)": {
+    "status": "PASSED",
+    "time": 1000
+  },
+  "test passed without expectation (TODO 5)": {
+    "status": "PASSED",
+    "noExpectationsWarning": true
+  }
+}
