@@ -25,7 +25,7 @@ CourseWare is product of materials evolution end we use it regularly in our Java
  - interactive integration of test results
 
 ### Will CourseWare be useful for me ?
-You will get most benefits from CourseWare when you use it on some kind of javascript lectures. But it can serve also as platform independent documentation tool, because it produces single #[strong index.html] file.
+You will get most benefits from CourseWare when you use it on some kind of javascript lectures. But it can serve also as platform independent documentation tool, because it produces single **index.html** file.
 
 ## Brief info about usage
 
