@@ -27,8 +27,39 @@ function Test(todo) {
 
 }
 
+function TestExists(todo) {
+  this.testsElement = element(by.css('tests-exists[todo="' + todo + '"] .tests-exists'));
+
+  this.getClassNames = function() {
+    return this.testsElement.getAttribute('class');
+  };
+
+  this.getText = function() {
+    return this.testsElement.getText();
+  }
+}
+
+
+function TestResults() {
+  this.testsElement = element(by.css('tests-results .tests-results'));
+
+  this.getTitle = function() {
+    return this.testsElement.element(by.css('.panel-title')).getText();
+  };
+
+  this.getTestsCount = function() {
+    return this.testsElement.all(by.css('.tests ul li')).count();
+  };
+}
+
 module.exports = {
   getTestForTodo: function(todo) {
     return new Test(todo);
+  },
+  getTestExistsForTodo: function(todo) {
+    return new TestExists(todo);
+  },
+  getTestResults: function() {
+    return new TestResults();
   }
 };
