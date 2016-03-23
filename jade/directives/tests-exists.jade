@@ -3,7 +3,7 @@ div(ng-if="tests.results")
     span.log-line(ng-repeat="line in tests.results.browserErrors").
       {{line}}<br />
 
-  div.tests(ng-if="!tests.results.browserErrors",ng-class="{'passed' : tests.exists(), 'failed' : !tests.exists()}")
+  div.tests-exists(ng-if="!tests.results.browserErrors",ng-class="{'passed' : tests.exists(), 'failed' : !tests.exists()}")
     span(ng-show="tests.exists()").
       Tests for TODO {{tests.todo}} exists
     span(ng-hide="tests.exists()").

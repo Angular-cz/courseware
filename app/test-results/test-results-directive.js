@@ -48,7 +48,7 @@
   };
 
   BaseTestDirectiveController.prototype.isSlow = function(test) {
-    return test.time > 10;
+    return test.time > 10;  // TODO config
   };
 
   /**
@@ -109,9 +109,10 @@
       this.testResults = testResults;
       this.$stateParams = $stateParams;
       this.$attrs = $attrs;
+
+      BaseTestDirectiveController.call(this, $scope);
       this.showTests = !$attrs.hasOwnProperty('titleOnly');
 
-      TestsResultsDirectiveController.call(this, $scope);
     }
 
     TestsResultsDirectiveController.prototype = Object.create(BaseTestDirectiveController.prototype);
@@ -119,7 +120,7 @@
 
     TestsResultsDirectiveController.prototype.getResults = function() {
       var loader = this.testResults.getResultsLoader(this.$stateParams.name);
-      this.results = loader.getResultsFor();
+      return loader.getResultsFor();
     };
 
     return {
@@ -127,7 +128,7 @@
       templateUrl: "directive-tests-results",
       transclude: true,
       scope: {},
-      controller: testsResultsDirectiveController,
+      controller: TestsResultsDirectiveController,
       controllerAs: 'tests'
     };
   }
@@ -147,7 +148,7 @@
       this.$stateParams = $stateParams;
       this.$attrs = $attrs;
 
-      TestsExistsDirectiveController.call(this, $scope);
+      BaseTestDirectiveController.call(this, $scope);
     }
 
     TestsExistsDirectiveController.prototype = Object.create(BaseTestDirectiveController.prototype);
@@ -155,7 +156,16 @@
 
     TestsExistsDirectiveController.prototype.getResults = function() {
       var loader = this.testResults.getResultsLoader(this.$stateParams.name);
-      this.results = loader.getResultsFor(this.todo, this.$attrs.hasOwnProperty('exact'));
+      return loader.getResultsFor(this.todo, this.$attrs.hasOwnProperty('exact'));
+    };
+
+    /**
+     * Check if all tests passes
+     *
+     * @returns {boolean}
+     */
+    TestsExistsDirectiveController.prototype.exists = function() {
+      return this.results.total > 0;
     };
 
     return {
@@ -166,7 +176,7 @@
       bindToController: {
         todo: '@?'
       },
-      controller: testsExistsDirectiveController,
+      controller: TestsExistsDirectiveController,
       controllerAs: 'tests'
     };
 
