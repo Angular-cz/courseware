@@ -1,12 +1,15 @@
-# CourseWare exercise materials processor
+# CourseWare - specialized content generator for Javascript courses
 
 CourseWare is a tool for generating interactive materials for your lectures.
-
-You can see DEMO materials here: https://angular-cz-courseware-examples.herokuapp.com
 
 [![Build Status](https://travis-ci.org/Angular-cz/courseware.svg?branch=master)](https://travis-ci.org/Angular-cz/courseware)
 [![Dependency Status](https://david-dm.org/Angular-cz/courseware.png)](https://david-dm.org/Angular-cz/courseware) 
 [![devDependency Status](https://david-dm.org/Angular-cz/courseware/dev-status.png)](https://david-dm.org/Angular-cz/courseware#info=devDependencies)
+
+## Short presentation
+[![Courseware - efficient materials for your workshop](https://img.youtube.com/vi/9aiTtVoqmow/0.jpg)](https://www.youtube.com/watch?v=9aiTtVoqmow)
+
+You can see readonly DEMO materials here: https://angular-cz-courseware-examples.herokuapp.com
 
 ## Motivation
 When you start creating materials you ussualy starts with nothing, then you go through the text files and html pages and there 
@@ -18,7 +21,7 @@ CourseWare is product of materials evolution end we use it regularly in our Java
 
 ### Features
  - single file documentation
- - generator from jade markup
+ - jade markup
  - responsive layout
  - components for hints and solutions
  - source highlighter
