@@ -7,6 +7,7 @@ module.exports = function CourseWarePO() {
   this.menuItems = element.all(by.repeater('todo in vm.todos').column('todo'));
   this.pagination = element.all(by.css('pagination')).last();
 
+
   this.go = function() {
     browser.get('/');
   };
@@ -33,6 +34,13 @@ module.exports = function CourseWarePO() {
   this.getPagination = function() {
     return new PaginationComponent(this.pagination);
   };
+
+  this.getFooterText = function() {
+    this.footer = element(by.css('.footer'));
+    this.footerLink = this.footer.element(by.css('a'));
+
+    return this.footerLink.getText();
+  }
 };
 
 function MenuItem(item) {

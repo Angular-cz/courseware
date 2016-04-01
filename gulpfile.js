@@ -22,6 +22,8 @@ var courseware = require("./main.js");
 var baseDir = process.cwd();
 var hljs = require('highlight.js');
 
+console.log('Courseware (%s)', courseware.version);
+
 var configFile = courseware.loadConfig();
 
 // TODO courseware.json haveto exist
@@ -31,7 +33,9 @@ var configFile = courseware.loadConfig();
 // TODO default config values
 // TODO configure port of development server
 
+
 var config = {
+  coursewareVersion: courseware.version,
   header: configFile.header,
   todos: configFile.todos,
   baseDir: baseDir,
@@ -99,7 +103,7 @@ gulp.task('css-build', ['less'], function() {
 gulp.task('inline', function() {
 
   // TODO compile also javascript
-  console.log('Inlining assets');
+  console.log('Inlining assets ...');
 
   return gulp.src(__dirname + '/dist/index.html')
     .pipe(inline({
@@ -112,13 +116,13 @@ gulp.task('inline', function() {
 
 // build jade into index.html
 gulp.task('jade-build', function() {
-  console.log('Building courseware');
+  console.log('Build ...');
   return jadeBuild();
 });
 
 // build jade into index.html with livereload server
 gulp.task('jade-devel', function() {
-  console.log('Building courseware with devel');
+  console.log('Build with devel livereload ...');
   return jadeBuild(true);
 });
 
@@ -147,7 +151,7 @@ function jadeBuild(devel) {
  */
 gulp.task('watch-courseware', function() {
 
-  console.log('Watching CourseWare internals');
+  console.log('Watching CourseWare internals ...');
   // watch less
   watch([__dirname + '/less/**/*.less'], batch(function(events, done) {
     gulp.start('css-build', done);

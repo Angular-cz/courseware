@@ -265,3 +265,5 @@ function determineExerciseName(karmaConfig) {
 }
 
 module.exports.determineExerciseName = determineExerciseName;
+
+module.exports.version = require('./package.json').version;

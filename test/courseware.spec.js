@@ -17,6 +17,11 @@ describe('Courseware', function() {
     it('should have a intro rendered', function() {
       expect(this.po.getIntroTitle()).toBe('Intro title');
     });
+
+    it('should contain version', function() {
+      var currentVersion = require('../package.json').version;
+      expect(this.po.getFooterText()).toMatch(currentVersion);
+    });
   });
 
   describe('menu', function() {
