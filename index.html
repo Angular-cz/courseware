@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Courseware : CourseWare - specialized content generator for Javascript courses">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Courseware</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Angular-cz/courseware">View on GitHub</a>
+
+          <h1 id="project_title">Courseware</h1>
+          <h2 id="project_tagline">CourseWare - specialized content generator for Javascript courses</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Angular-cz/courseware/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Angular-cz/courseware/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="courseware---specialized-content-generator-for-javascript-courses" class="anchor" href="#courseware---specialized-content-generator-for-javascript-courses" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CourseWare - specialized content generator for Javascript courses</h1>
+
+<p>CourseWare is a tool for generating interactive materials for your lectures.</p>
+
+<p><a href="https://travis-ci.org/Angular-cz/courseware"><img src="https://travis-ci.org/Angular-cz/courseware.svg?branch=master" alt="Build Status"></a>
+<a href="https://david-dm.org/Angular-cz/courseware"><img src="https://david-dm.org/Angular-cz/courseware.png" alt="Dependency Status"></a> 
+<a href="https://david-dm.org/Angular-cz/courseware#info=devDependencies"><img src="https://david-dm.org/Angular-cz/courseware/dev-status.png" alt="devDependency Status"></a></p>
+
+<h2>
+<a id="short-presentation" class="anchor" href="#short-presentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Short presentation</h2>
+
+<p>Check the video on youtube for brief information (9 min) - <a href="https://www.youtube.com/watch?v=9aiTtVoqmow">link</a></p>
+
+<p><a href="https://www.youtube.com/watch?v=9aiTtVoqmow"><img src="https://img.youtube.com/vi/9aiTtVoqmow/0.jpg" alt="Courseware - efficient materials for your workshop"></a></p>
+
+<p>You can see readonly DEMO materials here: <a href="https://angular-cz-courseware-examples.herokuapp.com">https://angular-cz-courseware-examples.herokuapp.com</a></p>
+
+<h2>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Motivation</h2>
+
+<p>When you start creating materials you ussualy starts with nothing, then you go through the text files and html pages and there 
+you come to the documentation generators. There you strugle with just text descriptions or invest your time and try to enhance the generator. </p>
+
+<p>There comes the CourseWare, its documentation specialized generator for programming courses and lectures.</p>
+
+<p>CourseWare is product of materials evolution end we use it regularly in our Javascript and AngularJS lectures - <a href="http://www.angular.cz">http://www.angular.cz</a>. </p>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h3>
+
+<ul>
+<li>single file documentation</li>
+<li>jade markup</li>
+<li>responsive layout</li>
+<li>components for hints and solutions</li>
+<li>source highlighter</li>
+<li>interactive integration of test results</li>
+</ul>
+
+<h3>
+<a id="will-courseware-be-useful-for-me-" class="anchor" href="#will-courseware-be-useful-for-me-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Will CourseWare be useful for me ?</h3>
+
+<p>You will get most benefits from CourseWare when you use it on some kind of javascript lectures. But it can serve also as platform independent documentation tool, because it produces single <strong>index.html</strong> file.</p>
+
+<h2>
+<a id="brief-info-about-usage" class="anchor" href="#brief-info-about-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Brief info about usage</h2>
+
+<p>There we will describe typical use-case when you have already your exercises in separate folders, where students are supposed 
+to edit source code and check the results in their browser.</p>
+
+<p>First install the npm package: </p>
+
+<pre><code>npm install courseware
+</code></pre>
+
+<p>Then create courseware configuration file <strong>courseware.json</strong> in the root of your package. 
+You can create default configuration file with command</p>
+
+<pre><code>courseware init
+</code></pre>
+
+<p>Then add your exercise names to the <strong>todos</strong> array in the configuration file</p>
+
+<pre><code>{
+  "introFile": "courseware-intro.jade",
+  "header": "CourseWare usage DEMO",
+  "todoFilePath": "complete/todo.jade",
+  "todos": [
+    "01-simple-generator",
+    "02-generator-with-tests",
+    "03-sandbox"
+  ]
+}
+</code></pre>
+
+<p>This tell CourseWare to use <strong>courseware-intro.jade</strong> as homepage and finds exercise instructions file <strong>todo.jade</strong> in folder 
+<strong>complete</strong> of each item in exercises list.</p>
+
+<p>It exactly reffers to our case, when each exercise folder lookd like the above. 
+Source files to edit are in its root and materials are in folder with finished exercise</p>
+
+<pre><code>  |- 01-generator-with-tests
+     |- complete
+     |  |- app.js
+     |  |- index.html
+     |  |- todo.jade   &lt;--- instructions for jade
+     |
+     |- app.js
+     |- index.html
+</code></pre>
+
+<p>Then you can use CourseWare to build your materials into single index.html file using command</p>
+
+<pre><code>courseware build
+</code></pre>
+
+<p>You can use it both as package which compiles your documentation when the host package is being installed. 
+Or globally just to generate single file documentation which is then included in repository.</p>
+
+<h3>
+<a id="develop-mode" class="anchor" href="#develop-mode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Develop mode</h3>
+
+<p>When you develop your materials, livereload can help you a lot. You can run this mode with command</p>
+
+<pre><code>courseware devel
+</code></pre>
+
+<p>Development server will run on http://localhost:8080, adds livereload server to the index.html,
+and reload browser when some of todo.jade or courseware-intro.jade is changed.</p>
+
+<h3>
+<a id="examples-repository-as-a-full-documentation" class="anchor" href="#examples-repository-as-a-full-documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples repository as a full documentation</h3>
+
+<p>Definitely check the example repository where you can see typical javascript course structure. 
+It will help you to understand how to use CouseWare in your course.
+It contains not only DEMO course but also style galery and documentation. <a href="https://github.com/Angular-cz/courseware-examples">https://github.com/Angular-cz/courseware-examples</a></p>
+
+<p>CourseWare is there integrated as package dependency and index.html is build when host package installed.</p>
+
+<p>You can see examples and read documentation here: <a href="https://angular-cz-courseware-examples.herokuapp.com">https://angular-cz-courseware-examples.herokuapp.com</a></p>
+
+<h2>
+<a id="contribution" class="anchor" href="#contribution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribution</h2>
+
+<p>We would be glad if you like this tool so much that you will help us to test this it, fix issues or create new features. 
+Also if you write some article or use it in public course, let us know we will list it here.</p>
+
+<h3>
+<a id="technologies" class="anchor" href="#technologies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Technologies</h3>
+
+<p>Courseware is based on well known and documented technologies: Npm, Gulp, Jade, Bootstrap, Socket.io, Highlight.js, AngularJS, Karma, Jasmine </p>
+
+<p>... so you can also learn a lot about wide range of nice tools.</p>
+
+<h3>
+<a id="how-to-develop-courseware" class="anchor" href="#how-to-develop-courseware" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to develop CourseWare</h3>
+
+<p>Clone this package and link the cloned copy to the npm via</p>
+
+<pre><code>npm link
+</code></pre>
+
+<p>Then use examples as host package and run development server inside the examples package with command</p>
+
+<pre><code>courseware courseware-devel
+</code></pre>
+
+<p>Then checks and livereload are also provided for CourseWare internals.</p>
+
+<h2>
+<a id="licence" class="anchor" href="#licence" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Licence</h2>
+
+<p>CourseWare is free for non-commercial and internal courses, and we would like to hear about your progress.</p>
+
+<p>If you want to use CourseWare on commercial course, or get comercial support do not hasitate to contact us.</p>
+
+<h2>
+<a id="contact-information" class="anchor" href="#contact-information" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact information</h2>
+
+<p>| Web: <a href="http://www.angular.cz">http://www.angular.cz</a> | Twitter: @angular_cz |</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Courseware maintained by <a href="https://github.com/Angular-cz">Angular-cz</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
