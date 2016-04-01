@@ -48,7 +48,7 @@
   };
 
   BaseTestDirectiveController.prototype.isSlow = function(test) {
-    return test.time > 10;  // TODO config
+    return test.time > 100;  // TODO config
   };
 
   /**
