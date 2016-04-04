@@ -33,7 +33,7 @@
   BaseTestDirectiveController.prototype.getResultsLoader = function() {
     return this.testResults.getResultsLoader(this.exercise);
   };
-  
+
   /**
    * Check if all tests passes
    *
