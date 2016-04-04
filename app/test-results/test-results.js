@@ -66,8 +66,9 @@
    * @param testResultsParser
    */
   function TestResultsLoader(testResultsParser) {
-    this.setResults = function(data) {
+    this.setResults = function(data, lastModified) {
       this.lastResults = testResultsParser.getFlattened(data);
+      this.lastModified = new Date(lastModified);
     };
 
     /**
@@ -136,7 +137,7 @@
     this.actualizeData_ = function(message) {
       var loader = this.getResultsLoader(message.exercise);
       console.log('Actualization of todo:' + message.exercise);
-      loader.setResults(message.data || {});
+      loader.setResults(message.data || {}, message.lastModified);
 
 
       $rootScope.$broadcast('todo:actualized');

@@ -8,6 +8,8 @@ div(ng-if="tests.results")
       |  {{tests.results.passed}} / {{tests.results.total}} passed
       span.skipped(ng-if='tests.results.skipped').
         &nbsp;({{tests.results.skipped}} skipped)
+      span.last-modified.
+        &nbsp; at {{tests.lastModified.toLocaleTimeString()}}
     ul(ng-if="tests.results.tests.length")
       li(ng-repeat="test in tests.results.tests", ng-class="tests.getClassFor(test)")
         span.icon

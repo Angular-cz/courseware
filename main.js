@@ -110,16 +110,19 @@ module.exports.socketServer = connectTestResultsSocket;
  * Loads data for test results from file .json file
  *
  * @param todoResultPath path of json file
- * @returns {{exercise, data}} object with named test results
+ * @returns {{exercise, data, lastModified}} object with named test results
  * @todo consider using exceptions
  */
 function loadTestResults(todoResultPath) {
+  // TODO use async api
   var data = fs.readFileSync(todoResultPath);
+  var lastModified = fs.statSync(todoResultPath).mtime;
 
   try {
     return {
       exercise: path.basename(todoResultPath, '.json'),
-      data: JSON.parse(data.toString())
+      data: JSON.parse(data.toString()),
+      lastModified: lastModified
     };
   } catch (error) {
     console.warn('Courseware: Parsing test results', todoResultPath, 'failed with error', error.message);

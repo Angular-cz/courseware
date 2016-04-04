@@ -4,7 +4,8 @@
     .directive('testsResults', testsResultsDirective)
     .directive('testsExists', testsExistsDirective);
 
-  function BaseTestDirectiveController($scope) {
+  function BaseTestDirectiveController($scope, exerciseName) {
+    this.exercise = exerciseName;
 
     // reaction on test results actualization
     $scope.$on('todo:actualized', function() {
@@ -25,9 +26,14 @@
    * Load test results of this block
    */
   BaseTestDirectiveController.prototype.actualizeResults_ = function() {
+    this.lastModified = this.getResultsLoader().lastModified;
     this.results = this.getResults();
   };
 
+  BaseTestDirectiveController.prototype.getResultsLoader = function() {
+    return this.testResults.getResultsLoader(this.exercise);
+  };
+  
   /**
    * Check if all tests passes
    *
@@ -63,17 +69,16 @@
 
     function TestsDirectiveController($scope, testResults, $stateParams, $attrs) {
       this.testResults = testResults;
-      this.$stateParams = $stateParams;
       this.$attrs = $attrs;
 
-      BaseTestDirectiveController.call(this, $scope);
+      BaseTestDirectiveController.call(this, $scope, $stateParams.name);
     }
 
     TestsDirectiveController.prototype = Object.create(BaseTestDirectiveController.prototype);
     TestsDirectiveController.constructor = TestsDirectiveController;
 
     TestsDirectiveController.prototype.getResults = function() {
-      var loader = this.testResults.getResultsLoader(this.$stateParams.name);
+      var loader = this.getResultsLoader();
 
       if (this.$attrs.hasOwnProperty('withoutTodo')) {
         return loader.getResultsWithoutTodo()
@@ -107,10 +112,9 @@
 
     function TestsResultsDirectiveController($scope, testResults, $stateParams, $attrs) {
       this.testResults = testResults;
-      this.$stateParams = $stateParams;
       this.$attrs = $attrs;
 
-      BaseTestDirectiveController.call(this, $scope);
+      BaseTestDirectiveController.call(this, $scope, $stateParams.name);
       this.showTests = !$attrs.hasOwnProperty('titleOnly');
 
     }
@@ -119,7 +123,7 @@
     TestsResultsDirectiveController.constructor = TestsResultsDirectiveController;
 
     TestsResultsDirectiveController.prototype.getResults = function() {
-      var loader = this.testResults.getResultsLoader(this.$stateParams.name);
+      var loader = this.getResultsLoader();
       return loader.getResultsFor();
     };
 
@@ -145,17 +149,16 @@
 
     function TestsExistsDirectiveController($scope, testResults, $stateParams, $attrs) {
       this.testResults = testResults;
-      this.$stateParams = $stateParams;
       this.$attrs = $attrs;
 
-      BaseTestDirectiveController.call(this, $scope);
+      BaseTestDirectiveController.call(this, $scope, $stateParams.name);
     }
 
     TestsExistsDirectiveController.prototype = Object.create(BaseTestDirectiveController.prototype);
     TestsExistsDirectiveController.constructor = TestsExistsDirectiveController;
 
     TestsExistsDirectiveController.prototype.getResults = function() {
-      var loader = this.testResults.getResultsLoader(this.$stateParams.name);
+      var loader = this.getResultsLoader();
       return loader.getResultsFor(this.todo, this.$attrs.hasOwnProperty('exact'));
     };
 
