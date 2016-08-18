@@ -1,0 +1,46 @@
+.x-announcer-icon {
+  position: fixed;
+  top: 0px;
+  right: 20px;
+  opacity: 0.3;
+  transition: opacity 100ms ease-in;
+}
+
+.x-announcer-icon:hover {
+  opacity: 0.9;
+}
+
+.x-announcer-icon::selection {
+  background: transparent;
+}
+
+x-announcer .overlay {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 9999;
+}
+
+x-announcer .row {
+  margin: 10px 0;
+}
+
+x-announcer label {
+  display: block;
+}
+
+x-announcer textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+x-announcer form {
+  padding: 10px;
+  width: 400px;
+  background: white;
+  border: 1px solid gray;
+}
+
+x-announcer input[name=selection] {
+  color: grey;
+}

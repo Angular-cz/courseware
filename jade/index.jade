@@ -102,6 +102,11 @@ body#top
   script(type='text/ng-template' id='directive-snippet')
     include directives/snippet
 
+  if config.plugins.xAnnouncer
+    link(href="/plugins/x-announcer/x-announcer.css", rel="stylesheet")
+    script(src='/plugins/x-announcer/x-announcer.js')
+    x-announcer(firebase-url=config.plugins.xAnnouncer.firebaseUrl)
+
   //- footer
   div.footer
     hr

@@ -45,7 +45,8 @@ var config = {
   develServerPort: 8080,
   testsSocketUrl: configFile.testsSocketUrl || "",
   testsSocket: (configFile.testsSocket || configFile.testsSocketUrl) ? true : false,
-  openExerciseLink: (typeof configFile.openExerciseLink === "undefined") ? true : configFile.openExerciseLink
+  openExerciseLink: (typeof configFile.openExerciseLink === "undefined") ? true : configFile.openExerciseLink,
+  plugins: configFile.plugins || {}
 };
 
 // escaping of html entities
