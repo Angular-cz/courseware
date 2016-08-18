@@ -44,7 +44,8 @@ var config = {
   lifeReloadPort: 35730,
   develServerPort: 8080,
   testsSocketUrl: configFile.testsSocketUrl || "",
-  testsSocket: (configFile.testsSocket || configFile.testsSocketUrl) ? true : false
+  testsSocket: (configFile.testsSocket || configFile.testsSocketUrl) ? true : false,
+  openExerciseLink: (typeof configFile.openExerciseLink === "undefined") ? true : configFile.openExerciseLink
 };
 
 // escaping of html entities
