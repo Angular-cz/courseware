@@ -8,6 +8,9 @@ var yargs = require('yargs').usage('courseware <command>')
   .command('build', 'build index.html courseware')
   .command('devel', 'run development server with livereload')
   .command('courseware-devel', 'run development mode which do livereload also CourseWare internals')
+  .version(function() {
+    return require(__dirname + '/../package.json').version;
+  })
   .help('help');
 
 var argv = yargs.argv;
