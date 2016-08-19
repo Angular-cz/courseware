@@ -1,6 +1,5 @@
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import "../bower_components/highlightjs/styles/tomorrow.css";
-
 @import "./parts/bs-menu.less";
 @import "./parts/hint.less";
 @import "./parts/solution.less";
@@ -74,46 +73,56 @@ body {
   padding: 10px;
 }
 
-ul.task {
-  padding: 6px;
-
+ul {
   li {
-    list-style:none;
-    padding: 0;
-  }
-
-  li:before {
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     padding: 0 10px;
-    content: "\e127";
   }
-}
 
-li.task {
-  list-style:none;
-  margin: 0 0 0 -15px;
+  &.task {
+    padding: 6px 6px 6px 11px;
 
-  &:before {
-    position: relative;
-    top: 1px;
-    left: -10px;
-    display: inline-block;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    padding: 0;
-    content: "\e127";
+    & > li {
+      list-style: none;
+      padding: 0;
+
+      ul {
+        margin-left:40px;
+      }
+    }
+
+    & > li:before {
+      position: relative;
+      top: 1px;
+      display: inline-block;
+      font-family: 'Glyphicons Halflings';
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 0 15px 0 10px;
+      content: "\e127";
+    }
+  }
+
+  li.task {
+    list-style: none;
+    margin: 0 0 0 -15px;
+
+    &:before {
+      position: relative;
+      top: 1px;
+      left: -10px;
+      display: inline-block;
+      font-family: 'Glyphicons Halflings';
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 0;
+      content: "\e127";
+    }
   }
 }
 
